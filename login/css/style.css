@@ -1,0 +1,748 @@
+/*inicio configs padrao*/
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap');
+*{
+    margin: 0%;
+    padding: 0%;
+}
+
+body{
+    background-color: #fff;
+    background-size: cover;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+}
+
+/*final configs padrao*/
+
+/*inicio mensagens de sucesso e erro*/
+div#msg-sucesso{
+    width: 400px;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: rgba(50,205,50,.3);
+    border: 1px solid rgb(34,139,34);
+    border-radius: 13px;
+    color: #000;
+}
+
+div.msg-erro{
+    width: 400px;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: rgba(250,128,114,.3);
+    border: 1px solid rgb(165,42,42);
+    border-radius: 13px;
+    color: #000;
+}
+/*final mensagens de sucesso e erro*/
+
+/*inicio menu*/
+
+ #menu ul{
+    list-style-type: none;
+    padding: 0;
+    background-color: rgb(37,37,39);
+}
+
+#menu ul li{
+    display: inline;
+}
+
+#menu ul li a{
+    color:white;
+    padding: 30px;
+    display: inline-block;
+    text-decoration: none;
+    transition: background .6;
+}
+
+#menu ul li a:hover{
+    background-color: rgb(160,4,4);
+}
+
+#menu ul li a#config{
+    float: right;
+}
+
+#menu ul li a#sair{
+    float: right;
+    background-color: rgb(160,4,4);
+    color:white;
+}
+/*fim menu*/
+
+/*Inicio usuário*/
+
+/*Inicio área de acesso ao estabelecimento*/
+
+#inicio{
+    background-image: url("../imagens/fundoinicio.jpg");
+}
+div#acesso{
+    height: 350px;
+    width: 60%;
+    color: white;
+    margin: 25px auto 0px auto;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 13px;
+    border: 1px solid black;
+}
+
+div#cupons{
+    background-color: rgba(0, 0, 0, 0.7);
+    margin: 25px auto 0px auto;
+    height: 150px;
+    width: 56.8%;
+    border-radius: 13px;
+    border: 1px solid black;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    padding: 25px;
+}
+#cupons h3{
+    padding: 15px;
+    text-align: center;
+}
+#cpm{
+    background-color: white;
+    border: 1px dotted rgb(160, 4, 4);
+    color: black;
+    border-radius: 15px;
+    margin: 25px auto 0px auto;
+    height: 120px;
+    width: 150px;
+    margin: 0px auto;
+    text-align: center;
+    align-items: center;
+}
+
+div#buttons{
+    display: flex;
+    flex-direction: row;
+}
+
+div#acesso h1, h2{
+    padding: 20px;
+    margin: 25px 20px 30px 20px;
+    text-align: center;
+}
+
+div#buttons button{
+    background-color: rgb(160,4,4);
+    border: none;
+    cursor: pointer;
+    display: block;
+    height: 150px;
+    width: 250px;
+    margin: 0px auto;
+    border-radius: 30px;
+    border:1px solid black;
+    font-size: 16pt;
+    padding: 5px 10px;
+    text-align: center;
+    transition: 0.3s;
+    color: white;
+}
+
+#cpm button{
+    background-color: rgb(160,4,4);
+    border: none;
+    cursor: pointer;
+    display: block;
+    height: 50px;
+    width: 100px;
+    margin: 0px auto;
+    border-radius: 30px;
+    border:1px solid black;
+    font-size: 16pt;
+    padding: 5px 10px;
+    text-align: center;
+    transition: 0.3s;
+    color: white;
+}
+
+#cpm button:hover{
+    background-color: rgb(220,1,1);
+}
+
+div#buttons button a{
+    text-decoration: none;
+    color: white;
+}
+
+div#buttons button:hover{
+  background-color: rgb(220,1,1);
+}
+/*Final área de acesso ao estabelecimento*/
+/*Final Inicio usuário*/
+
+/*Início Estabelecimento*/
+
+#logo{
+    background-color: rgba(0, 0, 0, 0.1);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+}
+
+#logo img{
+    width: 100vh;
+    height: 200px;
+    border-radius: 70px;
+    border: 3px solid black;
+}
+
+#funcoes-restaurante ul{
+    list-style-type: none;
+    padding: 0;
+    background-color: rgb(37,37,39);
+}
+
+#funcoes-restaurante ul li{
+    display: inline;
+}
+
+#funcoes-restaurante ul li a{
+    color:white;
+    padding: 30px;
+    display: inline-block;
+    text-decoration: none;
+    transition: background .6;
+}
+
+#funcoes-restaurante ul li a:hover{
+    background-color: rgb(160,4,4);
+}
+
+#resumo-mesas{
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+#legendas{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 5px;
+}
+#ocupado{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: rgb(160,4,4);
+    color: rgb(255, 255, 255);
+    width: 150px;
+    height: 150px;
+    justify-content: center;
+    border: 2px solid black;
+    border-radius: 75px;
+    margin: 10px;
+    font-size: 12px;
+}
+#disponivel{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: rgb(1, 134, 1);
+    color: rgb(255, 255, 255);
+    width: 150px;
+    height: 150px;
+    justify-content: center;
+    border: 2px solid black;
+    border-radius: 75px;
+    margin: 10px;
+    font-size: 12px;
+}
+#pedido-ativo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: rgb(94, 3, 117);
+    color: rgb(255, 255, 255);
+    width: 150px;
+    height: 150px;
+    justify-content: center;
+    border: 2px solid black;
+    border-radius: 75px;
+    margin: 10px;
+    font-size: 12px;
+}
+
+#mesas{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 70px;
+}
+
+#mesas img{
+    padding: 15px;
+    width: 120px;
+    height: 80px;
+    border-radius: 50px;
+}
+
+#item-est{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: rgb(1, 134, 1);
+    color: rgb(255, 255, 255);
+    margin: 10px;
+    border-radius: 5px;
+    padding: 20px;
+}
+#item-est-oc{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: rgb(160,4,4);
+    color: rgb(255, 255, 255);
+    margin: 10px;
+    border-radius: 5px;
+    padding: 20px;
+}
+#item-est-ped{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: rgb(94, 3, 117);
+    color: rgb(255, 255, 255);
+    margin: 10px;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+/*Final Início Estabelecimento*/
+
+/*Inicio Cardapios*/
+
+.logo{
+    font-size: 24px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+#cardapio-top{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgb(160,4,4);
+    height: 100px;
+    padding: 10px 20px;   
+}
+#cardapio-top h1{
+    font-size: 50px;
+    font: bolder;
+}
+
+#mesa{
+    padding: 10px;
+    float:center;
+}
+
+#mesa input{
+    border-color: rgb(160,4,4);
+    text-align: center;
+    border-radius: 15px;
+    color: rgb(160,4,4);
+    width: 120px;
+    height: 40px;
+    font-size: 0.5cm;
+}
+#mesa input::placeholder{
+    color: rgb(160,4,4);
+}
+
+#mesa h1{
+    color: rgb(160,4,4);
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+    margin-bottom: 10px;
+}
+
+#box{
+    width: auto;
+    justify-content: space-around;
+}
+
+#cardapio{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 20px;
+    width: auto;
+}
+
+#cardapio img{
+    padding: 30px;
+    width: 200px;
+    height: 150px;
+    border-radius: 50px;
+   
+}
+
+#item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: rgb(160, 4, 4);
+    border-color: rgb(160, 4, 4);
+    margin: 10px;
+    border-radius: 15px;
+    padding: 25px;
+    border: 2px dotted rgb(160,4,4);
+    width: 270px;
+    height: 426px;
+}
+
+#item:hover{
+    font-size: larger;
+    border: 2px solid rgb(160,4,4);
+}
+
+#item p{
+    width: 190px;
+    height: 30px;
+}
+#item h2{
+    padding: 0px;
+}
+
+#item button{
+    background-color: rgb(160,4,4);
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#item button:hover{
+    background-color: rgb(220,1,1);
+}
+#cardapio h3{
+    text-align: center;
+    padding: 10px;
+    color: rgb(160, 4, 4);
+}
+
+#item p{
+    font-size: 14px;
+    color: rgb(160, 4, 4);
+}
+
+#confirma-pedido{
+    padding: 40px;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+button#acesso-comanda{
+    width: 250px;
+    height: 80px;
+    background-color: rgb(160,4,4);
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover#acesso-comanda{
+    background-color: rgb(220,1,1);
+}
+
+button#acesso-comanda a{
+    color: #fff;
+    text-decoration: none;
+}
+
+#rodape{
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgb(160,4,4);
+    height: 70px;
+    padding: 10px 20px;
+}
+
+#rodape p{
+    color: #fff;
+}
+
+#btn-editar{
+    padding: 20px;
+}
+
+#btn-editar button{
+    width: 150px;
+    height: 130px;
+    background-color: rgb(160,4,4);
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#btn-editar button:hover{
+    background-color: rgb(220,1,1);
+}
+
+#btn-editar button.save{
+    float: right;
+}
+#btn-editar a{
+    text-decoration: none;
+    color: #FFF;
+}
+
+/*Final Cardapios*/
+
+/*Área de login e cadastro*/
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-image: url("../imagens/fachada.jpg");
+    background-size: cover;
+}
+.content{
+    display: flex;
+    background-color: #fff;
+    border-radius: 15px;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+.content::before{
+    content: "";
+    position: absolute;
+    background-color: rgb(160, 4, 4);
+    width: 40%;
+    height: 115%;
+    border-radius: 30px;
+}
+
+.first-column{
+    text-align: center;
+    width: 40%;
+    z-index: 2;
+}
+.second-column{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.title{
+    font-size: 36px;
+    font-weight: bold;
+}
+.first-title{
+    color: #fff;
+}
+.second-title{
+    text-align: center;
+    padding: 20px;
+    color: rgb(160, 4, 4);
+}
+.descrição{
+    font-size: 20px;
+    line-height: 40px
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+}
+form input{
+    display: block;
+    height: 55px;
+    width: 400px;
+    margin: 8px;
+    border-radius: 25px;
+    border:1px solid rgb(130, 130, 130);
+    font-size: 12pt;
+    padding: 10px 20px;
+    z-index: 0;
+   
+}
+.social-media {
+    margin: 1rem 0;
+}
+.link-social-media:not(:first-child){
+    margin-left: 10px;
+}
+.link-social-media .item-social-media {
+    transition: background-color .5s;
+}
+.link-social-media:hover .item-social-media{
+    background-color: #dd8b78;
+    color: #fff;
+    border-color: #dd8b78;
+}
+.list-social-media {
+    display: flex;
+    list-style-type: none;
+}
+.item-social-media {
+    border: 1px solid #bdc3c7;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    color: #95a5a6;
+}
+.seleção-cadastro{
+    margin: 1rem 0;
+}
+.seleção-cadastro ul{
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+} 
+.link-cliente{
+    margin: auto 10px auto 10px;
+    width: 40%;
+    height: 35px;
+    background-color: rgb(160, 4, 4);
+    line-height: 35px;
+    text-align: center;   
+    color: #fff;
+    text-decoration: none;
+    border: 1px solid #fff;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color .5s;
+}
+.link-cliente:hover{
+    background-color: white;
+    color:rgb(160, 4, 4)
+}
+.link-estabelecimento{
+    margin: auto 10px auto 10px;
+    width: 40%;
+    height: 35px;
+    line-height: 35px;
+    background-color: #eee;
+    text-align: center;   
+    color: rgb(160, 4, 4);
+    text-decoration: none;
+    border: 1px solid #eee;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color .5s;
+   
+}
+.link-estabelecimento:hover{
+    background-color: rgb(160,4,4);
+    color: #FFF;
+}
+.caixa-descrição{
+    margin-bottom: 30px;
+}
+
+.link-login{
+    color: #fff;
+    font-size: 40px;
+    transition: font-size .15s;
+}
+.link-login:hover{
+    color: rgb(235 137 137);
+    font-size: 39px;
+}
+
+input[type=submit]{
+    background-color: rgb(160, 4, 4);
+    border-radius: 30px;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    align-self: center;
+    width: 50%;
+    height: 50px;
+    text-transform: uppercase ;
+    transition: background-color .5s;
+    
+}
+input[type="submit"]:hover{
+    background-color: #fff;
+    color:rgb(160, 4, 4);
+    border: 1px solid rgb(160, 4, 4);
+    font-weight: bold;
+}
+
+::-webkit-input-placeholder{
+    color: rgb(130, 130, 130);
+}
+
+:-moz-placeholder{
+    color: #000;
+}
+
+::-moz-placeholder{
+    color: #000;
+}
+
+:-ms-input-placeholder{
+    color: #000;
+}
+input#rb{
+    height: 24px;
+    width: 25px;    
+}
+label{
+    color:#4b5050;
+    position: relative ;
+    place-self: flex-end;
+    right: 30px;
+    bottom: 29px;
+}
+
+/*final área de login e cadastro*/
+/*VERSÃO MOBILE*/
+@media screen and (max-width: 1040px) {
+    .content {
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+        justify-content: space-around;
+        background-image: url("../imagens/imagem-garçom.jpg");
+        background-size: cover;
+    }
+
+    .content::before {
+        width: 100%;
+        height: 40%;
+        top: 0;
+        border-radius: 0;
+    }
+    .second-column {
+        width: 100%;
+    }
+    .form {
+        width: 90%;
+    }
+}
