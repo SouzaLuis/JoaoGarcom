@@ -1,6 +1,6 @@
 <?php
-require_once 'classes/estabelecimento.php';
-$u = new Estabelecimento;
+require_once 'classes/usuario.php';
+$u = new Usuario;
 ?>
 
 <html lang="pt-br">
@@ -49,7 +49,7 @@ $u = new Estabelecimento;
                         $u->conectar("jglogin","localhost","root","");
                         if($u->msgErro == ""){
                         if($u->logar($email,$senha)){
-                            header("location: inicioEstabelecimento.php");
+                            header("location: inicio.php");
                         }
                         else
                         {
@@ -78,8 +78,8 @@ $u = new Estabelecimento;
                     }
                 }
                 ?>
+            </div>
         </div>
     </div>
-</div>
 </body>
 </html>
