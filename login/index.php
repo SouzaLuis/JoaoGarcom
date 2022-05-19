@@ -1,4 +1,7 @@
-
+<?php
+require_once 'classes/usuario.php';
+$u = new Usuario;
+?>
 
 <html lang="pt-br">
 <head>
@@ -46,7 +49,7 @@
                         $u->conectar("jglogin","localhost","root","");
                         if($u->msgErro == ""){
                         if($u->logar($email,$senha)){
-                            header("location: inicioEstabelecimento.php");
+                            header("location: inicio.php");
                         }
                         else
                         {
@@ -75,8 +78,8 @@
                     }
                 }
                 ?>
+            </div>
         </div>
     </div>
-</div>
 </body>
 </html>

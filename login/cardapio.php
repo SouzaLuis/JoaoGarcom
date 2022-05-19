@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['id'])) {
+    header("location: index.php");
+    exit;
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,15 +14,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cardápio</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
-    <style>
-        footer {
-            position: fixed;
-            height: 50px;
-            bottom: 0;
-            width: 100%;
-            margin-left:0;
-        }
-    </style>
 </head>
 <body style="min-width:372px;">
     <header>
@@ -39,42 +37,49 @@
 
             if($result):
                 if(mysqli_num_rows($result)>0):
+                    echo "<div class='row'>";
+                    $col=1;
                     while($produtos = mysqli_fetch_assoc($result)):
-                    ?>
-                               
+                    ?>   
                     <div class="col-sm-3 col-md-3">
                         <div class="card-group">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <form method="POST" action="index.php?action=add&id=<?php echo $product['id']?>">
-                                    <h4 class="card-tittle"><?php echo $produtos['nome']; ?></h4>
-                                    <img src="<?php echo $produtos['imagem']; ?>" style="width: 150px; height: 100px; border-radius: 35px; margin-bottom:15px" class="img-responsive">
-                                    <p class="card-text"><?php echo $produtos['descricao']; ?></p>
-                                    <h3 class="card-text">R$ <?php echo $produtos['preco']; ?></h3>
-                                    <div class="input-group mb-3">
-                                        <label class="input-group-text" for="inputGroupSelect01">Quantidade</label>
-                                        <select class="form-select" id="inputGroupSelect01">
-                                            <option value="0">0</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                        </select>
-                                    </div>
-                                    <input type="hidden" name="nome" value="<?php echo $produtos['nome']; ?>">                                                    
-                                    <input type="hidden" name="preco" value="<?php echo $produtos['preco']; ?>">
-                                    <input type="submit" name="carrinho" style="background-color: rgb(160,4,4);" class="btn btn-danger" value="Quero!">
-                                </form>
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <form method="POST" action="index.php?action=add&id=<?php echo $product['id']?>">
+                                        <h4 class="card-tittle"><?php echo $produtos['nome']; ?></h4>
+                                        <img src="<?php echo $produtos['imagem']; ?>" style="width: 150px; height: 100px; border-radius: 35px; margin-bottom:15px" class="img-responsive">
+                                        <p class="card-text" style="height: 50px"><?php echo $produtos['descricao']; ?></p>
+                                        <h3 class="card-text">R$ <?php echo $produtos['preco']; ?></h3>
+                                        <div class="input-group mb-3">
+                                            <label class="input-group-text" for="inputGroupSelect01">Quantidade</label>
+                                            <select class="form-select" id="inputGroupSelect01">
+                                                <option value="0">0</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                            </select>
+                                        </div>
+                                        <input type="hidden" name="nome" value="<?php echo $produtos['nome']; ?>">                                                    
+                                        <input type="hidden" name="preco" value="<?php echo $produtos['preco']; ?>">
+                                        <input type="submit" name="carrinho" style="background-color: rgb(160,4,4);" class="btn btn-danger" value="Quero!">
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    </div>
                     <?php
+                    $col++;
+                    if($col>4){
+                        echo "</div>";
+                        echo "<div class='row'>";
+                        $col=1;
+                    }
                     endwhile;
                 endif;
             endif;
