@@ -77,15 +77,13 @@ div.msg-erro{
 
 #inicio{
     background-image: url("../imagens/fundoinicio.jpg");
+   
 }
 div#acesso{
     height: 350px;
     width: 60%;
     color: white;
     margin: 25px auto 0px auto;
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 13px;
-    border: 1px solid black;
 }
 
 div#cupons{

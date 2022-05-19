@@ -1,7 +1,4 @@
-<?php
-require_once 'classes/estabelecimento.php';
-$u = new Estabelecimento;
-?>
+
 
 <html lang="pt-br">
 <head>
