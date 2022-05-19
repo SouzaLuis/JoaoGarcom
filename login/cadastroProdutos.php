@@ -63,7 +63,7 @@
                             <h6 class="text-left" style="margin-top:15px">Digite o caminho para imagem:</h6>
                             <input type="text" class="form-control" name="imagem" placeholder="nome_pasta/nome_imagem.formato_imagem" maxlength="100">
                             <h6 class="text-left" style="margin-top:15px">Digite o valor do produto:</h6>
-                            <input type="text" class="form-control" name="preco" placeholder="Preço" maxlength="10">
+                            <input type="decimal" class="form-control" name="preco" placeholder="Preço" maxlength="10" value="0.00">
                             <h6 class="text-left" style="margin-top:15px">Digite uma descrição para o produto:</h6>
                             <input type="text" class="form-control" name="descricao" placeholder="Descrição" maxlength="120">
                             <input type="hidden" name="id_estabelecimento" value="<?php echo $id_estabelecimento; ?>">

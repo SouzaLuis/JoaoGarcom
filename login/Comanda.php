@@ -133,7 +133,8 @@ if (!isset($_SESSION['id'])) {
                     <li class="list-group-item py-3">
                         <div class="text-right">
                             <h4 class="text-dark mb-3">Valor Total: R$ 53,96</h4>
-                            <a href="pagamento.php" class="btn btn-outline-success btn-lg"> Pagar Comanda </a>
+                            <a href="cardapio.php" class="btn btn-outline-success btn-lg">Efetuar outro pedido</a>
+                            <a href="pagamento.php" class="btn btn-danger btn-lg"> Pagar Comanda </a>
                         </div>
                     </li>
                     </li>
