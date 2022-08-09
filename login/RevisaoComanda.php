@@ -4,6 +4,14 @@ if (!isset($_SESSION['id'])) {
   header("location: index.php");
   exit;
 }
+if (!isset($_SESSION['id_comanda'])) {
+  header("location: inicio.php");
+  exit;
+}
+
+$id_usuario = $_SESSION['id'];
+$id_comanda = $_SESSION['id_comanda'];
+
 ?>
 
 
@@ -33,7 +41,10 @@ if (!isset($_SESSION['id'])) {
 
     <div class="container">
       <br>
-
+      <?php
+        $conexao = mysqli_connect('localhost', 'root', '','jglogin');
+        $query = "SELECT "
+      ?>
       <ul class="list-group mb-3">
         <li class="list-group-item py-3">
           <div class="row g-3">
@@ -90,108 +101,6 @@ if (!isset($_SESSION['id'])) {
             </div>
         </li>
 
-        <li class="list-group-item py-3">
-          <div class="row g-3">
-            <div class="col-4 col-md-3 col-lg-2">
-              <!--Resposividade-->
-              <a href="#">
-                <img src="imagens/refeicoes/hamburguer.jpg" class="img-thumbnail">
-              </a>
-            </div>
-            <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
-              <h4>
-                <b>
-                  <a href="#" class="text-decoration-none text-danger">
-                    Hamburguer
-                  </a>
-                </b>
-              </h4>
-              <h4 class="text-dark">
-                <small>
-                  Hamburguer de carne bovina com fritas!
-                </small>
-              </h4>
-            </div>
-
-            <!-- Divisao onde aumenta a quantidade/exclui -->
-            <div class="col-6 offset-6 col-sm-6 offset-sm-6 col-md-4 offset-md-8 col-lg-3 offset-lg-0 col-xl-2 align-self-center mt-3">
-              <div class="input-group">
-                <button type="button" class="btn btn-outline-dark btn-sm">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentcolor" class="bi bi-caret-down" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M3.204 5 8 10.481 12.796 5H3.204zm-.753.659 4.796 5.48a1 1 0 001.506.0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 00-.753 1.659z"></path>
-                  </svg>
-                </button>
-                <input type="text" class="form-control text-center text-center border-dark" value="2">
-                <button type="button" class="btn btn-outline-dark btn-sm">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentcolor" class="bi bi-caret-down" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M3.204 11 8 5.519 12.796 11H3.204zm-.753-.659 4.796-5.48a1 1 0 011.506.0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 01-.753-1.659z"></path>
-                  </svg>
-                </button>
-                <button type="button" class="btn btn-outline-danger border-dark btn-sm">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentcolor" class="bi bi-trash" viewBox="0 0 16 16">
-                    <path d="M5.5 5.5A.5.5.0 016 6v6a.5.5.0 01-1 0V6a.5.5.0 01.5-.5zm2.5.0a.5.5.0 01.5.5v6a.5.5.0 01-1 0V6a.5.5.0 01.5-.5zm3 .5a.5.5.0 00-1 0v6a.5.5.0 001 0V6z"></path>
-                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4 4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
-                  </svg>
-                </button>
-              </div>
-              <div class="text-right mt-2">
-                <small class="text-secondary">Valor un: R$ 14,99</small><br>
-                <span class="text-dark">Valor itens: R$ 29,98</span>
-              </div>
-            </div>
-        </li>
-
-        <li class="list-group-item py-3">
-          <div class="row g-3">
-            <div class="col-4 col-md-3 col-lg-2">
-              <!--Resposividade-->
-              <a href="#">
-                <img src="imagens/refeicoes/burritos.jpg" class="img-thumbnail">
-              </a>
-            </div>
-            <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
-              <h4>
-                <b>
-                  <a href="#" class="text-decoration-none text-danger">
-                    Burritos
-                  </a>
-                </b>
-              </h4>
-              <h4 class="text-dark">
-                <small>
-                  Burritos tipo mexicano com recheio de carne moída.
-                </small>
-              </h4>
-            </div>
-
-            <!-- Divisao onde aumenta a quantidade/exclui -->
-            <div class="col-6 offset-6 col-sm-6 offset-sm-6 col-md-4 offset-md-8 col-lg-3 offset-lg-0 col-xl-2 align-self-center mt-3">
-              <div class="input-group">
-                <button type="button" class="btn btn-outline-dark btn-sm">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentcolor" class="bi bi-caret-down" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M3.204 5 8 10.481 12.796 5H3.204zm-.753.659 4.796 5.48a1 1 0 001.506.0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 00-.753 1.659z"></path>
-                  </svg>
-                </button>
-                <input type="text" class="form-control text-center text-center border-dark" value="2">
-                <button type="button" class="btn btn-outline-dark btn-sm">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentcolor" class="bi bi-caret-down" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M3.204 11 8 5.519 12.796 11H3.204zm-.753-.659 4.796-5.48a1 1 0 011.506.0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 01-.753-1.659z"></path>
-                  </svg>
-                </button>
-                <button type="button" class="btn btn-outline-danger border-dark btn-sm">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentcolor" class="bi bi-trash" viewBox="0 0 16 16">
-                    <path d="M5.5 5.5A.5.5.0 016 6v6a.5.5.0 01-1 0V6a.5.5.0 01.5-.5zm2.5.0a.5.5.0 01.5.5v6a.5.5.0 01-1 0V6a.5.5.0 01.5-.5zm3 .5a.5.5.0 00-1 0v6a.5.5.0 001 0V6z"></path>
-                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4 4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
-                  </svg>
-                </button>
-              </div>
-              <div class="text-right mt-2">
-                <small class="text-secondary">Valor un: R$ 7,00</small><br>
-                <span class="text-dark">Valor itens: R$ 14,00</span>
-              </div>
-            </div>
-        </li>
-
         <!-- Botões para fechar a comanda -->
         <li class="list-group-item py-3">
           <div class="text-right">
@@ -200,7 +109,6 @@ if (!isset($_SESSION['id'])) {
             <a href="Comanda.php" class="btn btn-danger btn-lg">Confirmar Pedido</a>
           </div>
         </li>
-
     </div>
 
     </ul>
