@@ -4,6 +4,14 @@ if (!isset($_SESSION['id'])) {
   header("location: index.php");
   exit;
 }
+if (!isset($_SESSION['id_comanda'])) {
+  header("location: inicio.php");
+  exit;
+}
+
+$id_usuario = $_SESSION['id'];
+$id_comanda = $_SESSION['id_comanda'];
+
 ?>
 
 
@@ -33,7 +41,10 @@ if (!isset($_SESSION['id'])) {
 
     <div class="container">
       <br>
-
+      <?php
+        $conexao = mysqli_connect('localhost', 'root', '','jglogin');
+        $query = "SELECT "
+      ?>
       <ul class="list-group mb-3">
         <li class="list-group-item py-3">
           <div class="row g-3">
@@ -98,7 +109,6 @@ if (!isset($_SESSION['id'])) {
             <a href="Comanda.php" class="btn btn-danger btn-lg">Confirmar Pedido</a>
           </div>
         </li>
-
     </div>
 
     </ul>
