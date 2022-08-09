@@ -517,230 +517,70 @@ button#acesso-comanda a{
 /*Final Cardapios*/
 
 /*Área de login e cadastro*/
-.container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+.body-index{
     background-image: url("../imagens/fachada.jpg");
-    background-size: cover;
 }
-.content{
-    display: flex;
-    background-color: #fff;
-    border-radius: 15px;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-}
-.content::before{
-    content: "";
-    position: absolute;
-    background-color: rgb(160, 4, 4);
-    width: 40%;
-    height: 115%;
-    border-radius: 30px;
-}
-
-.first-column{
-    text-align: center;
-    width: 40%;
-    z-index: 2;
-}
-.second-column{
-    width: 60%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.title{
-    font-size: 36px;
-    font-weight: bold;
-}
-.first-title{
-    color: #fff;
-}
-.second-title{
-    text-align: center;
-    padding: 20px;
-    color: rgb(160, 4, 4);
-}
-.descrição{
-    font-size: 20px;
-    line-height: 40px
-}
-
-form{
-    display: flex;
-    flex-direction: column;
-}
-form input{
-    display: block;
-    height: 55px;
-    width: 400px;
-    margin: 8px;
-    border-radius: 25px;
-    border:1px solid rgb(130, 130, 130);
-    font-size: 12pt;
-    padding: 10px 20px;
-    z-index: 0;
-   
-}
-.social-media {
-    margin: 1rem 0;
-}
-.link-social-media:not(:first-child){
-    margin-left: 10px;
-}
-.link-social-media .item-social-media {
-    transition: background-color .5s;
-}
-.link-social-media:hover .item-social-media{
-    background-color: #dd8b78;
-    color: #fff;
-    border-color: #dd8b78;
-}
-.list-social-media {
-    display: flex;
-    list-style-type: none;
-}
-.item-social-media {
-    border: 1px solid #bdc3c7;
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    line-height: 35px;
-    text-align: center;
-    color: #95a5a6;
-}
-.seleção-cadastro{
-    margin: 1rem 0;
-}
-.seleção-cadastro ul{
-    display: flex;
-    justify-content: center;
-    list-style-type: none;
-} 
-.link-cliente{
-    margin: auto 10px auto 10px;
-    width: 40%;
-    height: 35px;
-    background-color: rgb(160, 4, 4);
-    line-height: 35px;
-    text-align: center;   
-    color: #fff;
-    text-decoration: none;
-    border: 1px solid #fff;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background-color .5s;
-}
-.link-cliente:hover{
-    background-color: white;
-    color:rgb(160, 4, 4)
-}
-.link-estabelecimento{
-    margin: auto 10px auto 10px;
-    width: 40%;
-    height: 35px;
-    line-height: 35px;
-    background-color: #eee;
-    text-align: center;   
-    color: rgb(160, 4, 4);
-    text-decoration: none;
-    border: 1px solid #eee;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background-color .5s;
-   
-}
-.link-estabelecimento:hover{
-    background-color: rgb(160,4,4);
-    color: #FFF;
-}
-.caixa-descrição{
-    margin-bottom: 30px;
-}
-
-.link-login{
-    color: #fff;
-    font-size: 40px;
-    transition: font-size .15s;
-}
-.link-login:hover{
-    color: rgb(235 137 137);
-    font-size: 39px;
-}
-
-input[type=submit]{
-    background-color: rgb(160, 4, 4);
-    border-radius: 30px;
-    color: #fff;
-    font-size: 15px;
-    cursor: pointer;
-    align-self: center;
-    width: 50%;
-    height: 50px;
-    text-transform: uppercase ;
-    transition: background-color .5s;
+.login-container{
     
+    margin-bottom: 5%;
 }
-input[type="submit"]:hover{
+.nav-item{
+    background: #d3d3d3e3;
+    border-radius: 10px 10px 0 0;
+}
+.login-form-1{
+    padding: 5%;
+    background: #FFFFFF;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+}
+.login-form-1 h3{
+    text-align: center;
+    color: #333;
+}
+.login-form-2{
+    padding: 5%;
+    background: #be0000de;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+}
+.login-form-2 h3{
+    text-align: center;
+    color: #fff;
+}
+.login-container form{
+    padding: 10%;
+}
+.btnSubmit
+{
+    width: 50%;
+    border-radius: 1rem;
+    padding: 1.5%;
+    border: none;
+    cursor: pointer;
+}
+.login-form-1 .btnSubmit{
+    font-weight: 600;
+    color: #fff;
+    background-color: #be0000de;
+}
+
+.login-form-2 .btnSubmit{
+    font-weight: 600;
+    color: #be0000de;
     background-color: #fff;
-    color:rgb(160, 4, 4);
-    border: 1px solid rgb(160, 4, 4);
-    font-weight: bold;
+}
+.login-form-2 .ForgetPwd{
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+}
+.login-form-1 .ForgetPwd{
+    color: #333;
+    font-weight: 600;
+    text-decoration: none;
 }
 
-::-webkit-input-placeholder{
-    color: rgb(130, 130, 130);
-}
 
-:-moz-placeholder{
-    color: #000;
-}
-
-::-moz-placeholder{
-    color: #000;
-}
-
-:-ms-input-placeholder{
-    color: #000;
-}
-input#rb{
-    height: 24px;
-    width: 25px;    
-}
-label{
-    color:#4b5050;
-    position: relative ;
-    place-self: flex-end;
-    right: 30px;
-    bottom: 29px;
-}
-
-/*final área de login e cadastro*/
-/*VERSÃO MOBILE*/
-@media screen and (max-width: 1040px) {
-    .content {
-        width: 100%;
-        height: 100%;
-        flex-direction: column;
-        justify-content: space-around;
-        background-image: url("../imagens/imagem-garçom.jpg");
-        background-size: cover;
-    }
-
-    .content::before {
-        width: 100%;
-        height: 40%;
-        top: 0;
-        border-radius: 0;
-    }
-    .second-column {
-        width: 100%;
-    }
-    .form {
-        width: 90%;
-    }
+.form-group 
+{
+ padding:10px;	
 }

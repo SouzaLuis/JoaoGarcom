@@ -17,7 +17,7 @@ Class Usuario
         }
     }
 
-    public function cadastrar($nome, $telefone, $endereco, $cpf, $email, $senha)
+    public function cadastrar($nome, $telefone, $cep, $logadouro, $bairro, $localidade, $uf, $cpf, $email, $senha)
     {
         global $pdo;
         //verificar se já existe email cadastrado
@@ -30,10 +30,14 @@ Class Usuario
         }
         else
         { //cadastrar email não cadastrado
-            $sql = $pdo->prepare("INSERT INTO usuario (nome, telefone, endereco, cpf, email, senha) VALUES (:n, :t, :en, :c, :e, :s)");
+            $sql = $pdo->prepare("INSERT INTO usuario (nome, telefone, cep, logadouro, bairro, localidade, uf, cpf, email, senha) VALUES (:n, :t, :en, :cp, :log, :b, :loc, :uf,:c, :e, :s)");
             $sql->bindValue(":n",$nome);
             $sql->bindValue(":t",$telefone);
-            $sql->bindValue(":en",$endereco);
+            $sql->bindValue(":cp",$cep);
+            $sql->bindValue(":log",$logadouro);
+            $sql->bindValue(":b",$bairro);
+            $sql->bindValue(":loc",$localidade);
+            $sql->bindValue(":uf",$uf);       
             $sql->bindValue(":c",$cpf);     
             $sql->bindValue(":e",$email);
             $sql->bindValue(":s",md5($senha));
@@ -52,7 +56,7 @@ Class Usuario
         $sql->execute();
         if($sql->rowCount()>0){ //entrar no sistema
             $dado = $sql->fetch();
-            session_start();
+          
             $_SESSION['id'] = $dado['id'];
             return true;
         }

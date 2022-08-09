@@ -15,6 +15,7 @@ Class Estabelecimento
         } catch(PDOException $e){
             $msgErro = $e->getMessage();
         }
+      
     }
 
     public function cadastrar($nome, $telefone, $endereco, $cnpj, $email, $senha)
@@ -46,13 +47,14 @@ Class Estabelecimento
     {
         global $pdo;
         //verificar se está cadatrado
+        
         $sql = $pdo->prepare("SELECT id FROM estabelecimento WHERE email = :e AND senha = :s");
         $sql->bindValue(":e",$email);
         $sql->bindValue(":s",md5($senha));
         $sql->execute();
         if($sql->rowCount()>0){ //entrar no sistema
             $dado = $sql->fetch();
-            session_start();
+           
             $_SESSION['id'] = $dado['id'];
             return true;
         }
@@ -62,5 +64,6 @@ Class Estabelecimento
     }
 
 }
+
 
 ?>

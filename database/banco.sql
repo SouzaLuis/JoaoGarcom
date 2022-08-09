@@ -15,7 +15,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 -- Copiando estrutura para tabela jglogin.estabelecimento
-CREATE TABLE IF NOT EXISTS `estabelecimento` (
+jgloginjgloginCREATE TABLE IF NOT EXISTS `estabelecimento` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(80) NOT NULL,
   `telefone` varchar(30) NOT NULL,
