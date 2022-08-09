@@ -4,6 +4,15 @@ if (!isset($_SESSION['id'])) {
     header("location: index.php");
     exit;
 }
+if (!isset($_SESSION['id_comanda'])) {
+    header("location: inicio.php");
+    exit;
+}
+
+$id_comanda = $_SESSION['id_comanda'];
+
+require_once 'classes/comanda.php';
+$c = new Comanda;
 ?>
 
 <!DOCTYPE html>
@@ -21,20 +30,26 @@ if (!isset($_SESSION['id'])) {
             <h1 class="navbar mx-auto text-white">Restaurante Megaville</h1>
          </nav>
     </header>
-    <div class="text-center">
-        <div class="input-group input-group-sm mb-3" style="width: 20%;padding: 10px">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Mesa n°</span>
-            </div>
-            <input type="text" class="form-control" aria-label="Exemplo do tamanho do input" aria-describedby="inputGroup-sizing-sm" placeholder="99" style="text-align:center">
-        </div>
-    </div>
     <div class="container-fluid"> 
         <?php
             $conexao = mysqli_connect('localhost', 'root', '','jglogin');
-            $query = 'SELECT * FROM produtos ORDER BY id ASC';
+            $id_estabelecimento = $_GET['id'];
+            $query = 'SELECT * FROM produtos p WHERE p.id_estabelecimento = '.$id_estabelecimento.' ORDER BY id ASC';
+            $mesa = 'SELECT c.numero_mesa FROM comanda c WHERE c.id = '.$id_comanda.' ORDER BY id ASC';
+            $dado = mysqli_query($conexao, $mesa);
             $result = mysqli_query($conexao, $query);
-
+            $dados = mysqli_fetch_assoc($dado);
+            
+        ?>
+            <div class="text-center">
+            <div class="input-group input-group-sm mb-3" style="width: 20%;padding: 10px">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Mesa n°</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Exemplo do tamanho do input" aria-describedby="inputGroup-sizing-sm" placeholder="<?php echo $dados['numero_mesa']; ?>" style="text-align:center" disabled>
+            </div>
+            </div>
+        <?php
             if($result):
                 if(mysqli_num_rows($result)>0):
                     echo "<div class='row'>";
@@ -45,14 +60,14 @@ if (!isset($_SESSION['id'])) {
                         <div class="card-group">
                             <div class="card text-center">
                                 <div class="card-body">
-                                    <form method="POST" action="index.php?action=add&id=<?php echo $product['id']?>">
+                                    <form method="POST" action="">
                                         <h4 class="card-tittle"><?php echo $produtos['nome']; ?></h4>
                                         <img src="<?php echo $produtos['imagem']; ?>" style="width: 150px; height: 100px; border-radius: 35px; margin-bottom:15px" class="img-responsive">
                                         <p class="card-text" style="height: 50px"><?php echo $produtos['descricao']; ?></p>
                                         <h3 class="card-text">R$ <?php echo $produtos['preco']; ?></h3>
                                         <div class="input-group mb-3">
-                                            <label class="input-group-text" for="inputGroupSelect01">Quantidade</label>
-                                            <select class="form-select" id="inputGroupSelect01">
+                                            <label class="input-group-text" for="quantidade">Quantidade</label>
+                                            <select class="form-select" name="quantidade" id="quantidade">
                                                 <option value="0">0</option>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
@@ -65,8 +80,9 @@ if (!isset($_SESSION['id'])) {
                                                 <option value="9">9</option>
                                             </select>
                                         </div>
-                                        <input type="hidden" name="nome" value="<?php echo $produtos['nome']; ?>">                                                    
+                                        <input type="hidden" name="id" value="<?php echo $produtos['id']; ?>">
                                         <input type="hidden" name="preco" value="<?php echo $produtos['preco']; ?>">
+                                        <input type="hidden" name="id_estabelecimento" value="<?php echo $produtos['id_estabelecimento']; ?>">
                                         <input type="submit" name="carrinho" style="background-color: rgb(160,4,4);" class="btn btn-danger" value="Quero!">
                                     </form>
                                 </div>
@@ -83,6 +99,31 @@ if (!isset($_SESSION['id'])) {
                     endwhile;
                 endif;
             endif;
+        ?>
+        <?php
+        //verificar se clicou no botão
+        if(isset($_POST['id'])){
+            $quantidade = addslashes($_POST['quantidade']);
+            $valor = addslashes($_POST['preco']);
+            $id_produto = addslashes($_POST['id']);
+
+            //verificar se está vazio
+            if(!empty($id_comanda) && !empty($id_produto)){
+                $c->conectar("jglogin","localhost","root","");
+                if($c->msgErro == ""){
+                    if($c->carregar_comanda($quantidade, $valor, $id_comanda, $id_produto))
+                    {
+                    }            
+                }else{
+                }
+            }else{
+                ?>
+                <div class="msg-erro">
+                Preencha todos os campos!
+                </div>
+                <?php
+            }                
+        }
         ?>
         <li class="list-group-item py-3" style="border: 0px">
             <div class="text-center">

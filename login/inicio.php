@@ -5,6 +5,10 @@
         header("location: index.php");
         exit;
     }
+    $id_usuario = $_SESSION['id'];
+
+    require_once 'classes/comanda.php';
+    $c = new Comanda;
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -47,10 +51,10 @@
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img class="d-block w-100" style="height: 400px; width: 700px;" src="imagens/banner.jpg" alt="First slide">
+      <img class="d-block w-100" style="height: 350px; width: 700px;" src="imagens/banner.jpg" alt="First slide">
     </div>
     <div class="carousel-item">
-      <img class="d-block w-100" style="height: 400px; width: 700px;" src="imagens/banner2.png" alt="Second slide">
+      <img class="d-block w-100" style="height: 350px; width: 700px;" src="imagens/banner2.png" alt="Second slide">
     </div>
   </div>
   <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -73,8 +77,72 @@
       <video id="preview" style="width: 300px"></video>
     </center></div>
     <br><br>
-    <a href="cardapio.php" style="width: 300px" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Localização</a>
-  </div>
+
+      <?php
+        $conexao = mysqli_connect('localhost', 'root', '','jglogin');
+        $query = 'SELECT id, nome FROM estabelecimento ORDER BY id ASC';
+        $result = mysqli_query($conexao, $query);
+        if($result):
+          if(mysqli_num_rows($result)>0):
+            
+            echo "<div class='form-group'>";
+            if(!empty($_POST['estabelecimentos'])){
+              header("location: cardapio.php?id=".$_POST['estabelecimentos']);
+            }
+      ?>
+        <form action="" method="POST">
+          <select class="form-select" style="text-align: center;" name="estabelecimentos">
+            <?php  while($estabelecimento = mysqli_fetch_assoc($result)):?>
+              <option value="<?php echo $estabelecimento['id']; ?>">
+            <?php echo $estabelecimento['nome']; ?> </option>
+            <?php endwhile;?>
+          </select>
+        <br>
+        <div class="text-center">
+            <div class="input-group input-group-sm mb-3" style="width: 20%;padding: 10px">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Mesa n°</span>
+                </div>
+                <input name='mesa' type="text" class="form-control" aria-label="Exemplo do tamanho do input" aria-describedby="inputGroup-sizing-sm" placeholder="99" style="text-align:center" required>
+            </div>
+        </div>
+        <input type="submit" style="width: 300px" name="botao" class="btn btn-danger btn-lg active" value="Entrar no estabelecimento!">
+        <input type="hidden" name="id_usuario" value="<?php echo $id_usuario; ?>">
+        </form>
+          <?php echo "</div>";
+          endif;
+        endif;
+        ?>
+     <?php
+    //verificar se clicou no botão
+    if(isset($_POST['estabelecimentos']))
+    {
+      $valor = 0.00;
+      $id_estabelecimento = addslashes($_POST['estabelecimentos']);
+      $id_usuario = addslashes($_POST['id_usuario']);
+      $mesa = addslashes($_POST['mesa']);
+      $pagamento = 0;
+
+        //verificar se está vazio
+        if(!empty($id_estabelecimento) && !empty($id_usuario) && !empty($mesa)){
+            $c->conectar("jglogin","localhost","root","");
+            if($c->msgErro == ""){
+                if($c->abrir_comanda($valor,$id_estabelecimento, $id_usuario, $mesa, $pagamento))
+                {
+                    if($c->gerar_comanda($id_usuario, $id_estabelecimento)){}
+                }            
+            }else{
+            }
+        }else{
+            ?>
+            <div class="msg-erro">
+            Preencha todos os campos!
+            </div>
+            <?php
+        }                
+    }
+    ?>
+  
 </div>
 <br><br>
   

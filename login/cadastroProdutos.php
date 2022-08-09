@@ -5,7 +5,7 @@
          header("location: index.php");
          exit;
      }
-     $id_estabelecimento = $_SESSION['id'];
+    $id_estabelecimento = $_SESSION['id'];
     require_once 'classes/produto.php';
     $u = new Produto;
 ?>
