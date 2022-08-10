@@ -82,6 +82,7 @@
         $conexao = mysqli_connect('localhost', 'root', '','jglogin');
         $query = 'SELECT id, nome FROM estabelecimento ORDER BY id ASC';
         $result = mysqli_query($conexao, $query);
+
         if($result):
           if(mysqli_num_rows($result)>0):
             

@@ -11,7 +11,6 @@ if (!isset($_SESSION['id_comanda'])) {
 
 $id_usuario = $_SESSION['id'];
 $id_comanda = $_SESSION['id_comanda'];
-
 ?>
 
 
@@ -43,7 +42,15 @@ $id_comanda = $_SESSION['id_comanda'];
       <br>
       <?php
         $conexao = mysqli_connect('localhost', 'root', '','jglogin');
-        $query = "SELECT "
+        $query = "SELECT p.imagem, p.nome, p.descricao, p.preco, pc.quantidade, c.id_estabelecimento FROM produto_comanda pc INNER JOIN produtos p ON p.id = pc.id_produto INNER JOIN comanda c ON c.id = pc.id_comanda WHERE pc.id_comanda = ".$id_comanda." AND c.id_usuario = ".$id_usuario." ORDER BY pc.id_produto ASC";
+        $result = mysqli_query($conexao, $query);
+
+        $total = 0;
+        $total_geral = 0;
+        if($result):
+          if(mysqli_num_rows($result)>0):
+            while($produtos = mysqli_fetch_assoc($result)):
+              $id_estabelecimento = $produtos['id_estabelecimento'];
       ?>
       <ul class="list-group mb-3">
         <li class="list-group-item py-3">
@@ -51,20 +58,20 @@ $id_comanda = $_SESSION['id_comanda'];
             <div class="col-4 col-md-3 col-lg-2">
               <!--Resposividade-->
               <a href="#">
-                <img src="imagens/refeicoes/pizza.jpg" class="img-thumbnail">
+                <img src="<?php echo $produtos['imagem']; ?>" class="img-thumbnail">
               </a>
             </div>
             <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
               <h4>
                 <b>
                   <a href="#" class="text-decoration-none text-danger">
-                    Fatia de Pizza
+                    <?php echo $produtos['nome']; ?>
                   </a>
                 </b>
               </h4>
               <h4 class="text-dark">
                 <small>
-                  Fatia de pizza de calabresa
+                  <?php echo $produtos['descricao']; ?>
                 </small>
               </h4>
             </div>
@@ -79,7 +86,7 @@ $id_comanda = $_SESSION['id_comanda'];
                   </svg>
                 </button>
 
-                <input type="text" class="form-control text-center border-dark" value="1">
+                <input type="text" class="form-control text-center border-dark" value="<?php echo $produtos['quantidade']; ?>">
 
                 <button type="button" class="btn btn-outline-dark btn-sm">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentcolor" class="bi bi-caret-down" viewBox="0 0 16 16">
@@ -95,17 +102,27 @@ $id_comanda = $_SESSION['id_comanda'];
                 </button>
               </div>
               <div class="text-right mt-2">
-                <small class="text-secondary">Valor un: R$ 9,98</small><br>
-                <span class="text-dark">Valor itens: R$ 9,98</span>
+                <small class="text-secondary">Valor un: R$ <?php echo $produtos['preco']; ?></small><br>
+                <?php 
+                  $preco_un = $produtos['preco'];
+                  $quantidade = $produtos['quantidade'];
+                  $total = $preco_un * $quantidade;
+                  $total_geral = $total_geral + $total;
+                ?>
+                <span class="text-dark">Valor itens: R$ <?php echo $total; ?></span>
               </div>
             </div>
         </li>
-
+        <?php
+                endwhile;
+            endif;
+        endif;
+        ?>
         <!-- Botões para fechar a comanda -->
         <li class="list-group-item py-3">
           <div class="text-right">
-            <h4 class="text-dark mb-3">Valor Total: R$ 53,96</h4>
-            <a href="http://localhost/joaogarcom/login/cardapio.php" class="btn btn-outline-success btn-lg"> Continuar Pedindo </a>
+            <h4 class="text-dark mb-3">Valor Total: R$ <?php echo $total_geral; ?></h4>
+            <a href="http://localhost/joaogarcom/login/cardapio.php?id='<?php echo $id_estabelecimento; ?>'" class="btn btn-outline-success btn-lg"> Continuar Pedindo </a>
             <a href="Comanda.php" class="btn btn-danger btn-lg">Confirmar Pedido</a>
           </div>
         </li>

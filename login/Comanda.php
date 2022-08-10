@@ -1,9 +1,16 @@
- <?php
+<?php
 session_start();
 if (!isset($_SESSION['id'])) {
-    header("location: index.php");
-    exit;
+  header("location: index.php");
+  exit;
 }
+if (!isset($_SESSION['id_comanda'])) {
+  header("location: inicio.php");
+  exit;
+}
+
+$id_usuario = $_SESSION['id'];
+$id_comanda = $_SESSION['id_comanda'];
 ?>
 
 
@@ -34,111 +41,86 @@ if (!isset($_SESSION['id'])) {
 
         <div class="container">
             <div class="container">
-
+                
                 <br>
-
+                <?php
+                    $conexao = mysqli_connect('localhost', 'root', '','jglogin');
+                    $query = "SELECT p.imagem, p.nome, p.descricao, p.preco, pc.quantidade, c.id_estabelecimento, u.nome, c.numero_mesa FROM produto_comanda pc INNER JOIN produtos p ON p.id = pc.id_produto INNER JOIN comanda c ON c.id = pc.id_comanda INNER JOIN usuario u ON u.id = c.id_usuario WHERE pc.id_comanda = ".$id_comanda." AND c.id_usuario = ".$id_usuario." ORDER BY pc.id_produto ASC";
+                    $query_usuario = "SELECT u.nome, c.numero_mesa FROM comanda c INNER JOIN usuario u ON u.id = c.id_usuario WHERE u.id = ".$id_usuario." and c.id = ".$id_comanda." ORDER BY u.id ASC";
+                    $result = mysqli_query($conexao, $query);
+                    $result_usuario = mysqli_query($conexao, $query_usuario);
+                    if($result_usuario):
+                        if(mysqli_num_rows($result_usuario)>0):
+                            while($usuario = mysqli_fetch_assoc($result_usuario)):
+                ?>
                 <li class="list-group-item py-3 ">
                     <div class="text-center">
-                        <h4 class="text-dark mb-3">Cliente: Vitor Hugo da Silva Ferreira</h4>
-                        <h4 class="text-dark mb-3">Mesa: 04</h4>
+                        <h4 class="text-dark mb-3">Cliente: <?php echo $usuario['nome']; ?></h4>
+                        <h4 class="text-dark mb-3">Mesa: <?php echo $usuario['numero_mesa']; ?></h4>
 
                     </div>
                 </li>
+                <?php
+                            endwhile;
+                        endif;
+                    endif;
+                    $total = 0;
+                    $total_geral = 0;
+                    if($result):
+                        if(mysqli_num_rows($result)>0):
+                            while($produtos = mysqli_fetch_assoc($result)):
+                                $id_estabelecimento = $produtos['id_estabelecimento'];
+                ?>
+                
 
                 <ul class="list-group mb-3">
 
-                <li class="list-group-item py-3">
-                        <div class="row g-3">
-                            <div class="col-4 col-md-3 col-lg-2">
-                                <!--Resposividade-->
-                                <a href="#">
-                                    <img src="imagens/refeicoes/pizza.jpg" class="img-thumbnail">
-                                </a>
-                            </div>
-                            <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
-                                <h4>
-                                    <b>
-                                        <a href="#" class="text-decoration-none text-danger">
-                                            Fatia de Pizza
-                                        </a>
-                                    </b>
-                                </h4>
-
-
-                                <div class="row">
-                                    <div class="text mt-2">
-                                        <h4 class="col-sm text-left">Quantidade: 01</h4>
-                                    </div>
-                                    <h4 class="col-sm text-left">Valor unidade: R$7,00</h4>
-                                    <h4 class="col-sm text-right">Valor total: R$7,00</h4>
-                                </div>
-
-                    </li>
                     <li class="list-group-item py-3">
                         <div class="row g-3">
-                            <div class="col-4 col-md-3 col-lg-2">
-                                <!--Resposividade-->
-                                <a href="#">
-                                    <img src="imagens/refeicoes/hamburguer.jpg" class="img-thumbnail">
-                                </a>
-                            </div>
-                            <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
-                                <h4>
-                                    <b>
-                                        <a href="#" class="text-decoration-none text-danger">
-                                            Hamburguer
-                                        </a>
-                                    </b>
-                                </h4>
-
-
-                                <div class="row">
-                                    <div class="text mt-2">
-                                        <h4 class="col-sm text-left">Quantidade: 02</h4>
-                                    </div>
-                                    <h4 class="col-sm text-left">Valor unidade: R$14,99</h4>
-                                    <h4 class="col-sm text-right">Valor total: R$29,98</h4>
-                                </div>
-
-                    </li>
-
-                    <li class="list-group-item py-3">
-                        <div class="row g-3">
-                            <div class="col-4 col-md-3 col-lg-2">
-                                <!--Resposividade-->
-                                <a href="#">
-                                    <img src="imagens/refeicoes/burritos.jpg" class="img-thumbnail">
-                                </a>
-                            </div>
-                            <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
-                                <h4>
-                                    <b>
-                                        <a href="#" class="text-decoration-none text-danger">
-                                            Burritos
-                                        </a>
-                                    </b>
-                                </h4>
-
-
-                                <div class="row">
-                                    <div class="text mt-2">
-                                        <h4 class="col-sm text-left">Quantidade: 02</h4>
-                                    </div>
-                                    <h4 class="col-sm text-left">Valor unidade: R$7,00</h4>
-                                    <h4 class="col-sm text-right">Valor itens: R$14,00</h4>
-                                </div>
-
-
-                                <!-- Botões para fechar a comanda -->
-                    <li class="list-group-item py-3">
-                        <div class="text-right">
-                            <h4 class="text-dark mb-3">Valor Total: R$ 53,96</h4>
-                            <a href="cardapio.php" class="btn btn-outline-success btn-lg">Efetuar outro pedido</a>
-                            <a href="pagamento.php" class="btn btn-danger btn-lg"> Pagar Comanda </a>
+                        <div class="col-4 col-md-3 col-lg-2">
+                        <!--Resposividade-->
+                        <a href="#">
+                            <img src="<?php echo $produtos['imagem']; ?>" class="img-thumbnail">
+                        </a>
                         </div>
+                        <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
+                        <h4>
+                            <b>
+                            <a href="#" class="text-decoration-none text-danger">
+                                <?php echo $produtos['nome']; ?>
+                            </a>
+                            </b>
+                        </h4>
+                        <h4 class="text-dark">
+                            <small>
+                            <?php echo $produtos['descricao']; ?>
+                            </small>
+                        </h4>
+                        
+                        </div>
+                        <div class="text-right mt-2">
+                            <small class="text-secondary">Valor un: R$ <?php echo $produtos['preco']; ?> ( Qtd: <?php echo $produtos['quantidade']; ?> )</small><br>
+                            <?php 
+                                $preco_un = $produtos['preco'];
+                                $quantidade = $produtos['quantidade'];
+                                $total = $preco_un * $quantidade;
+                                $total_geral = $total_geral + $total;
+                            ?>
+                            <span class="text-dark">Valor itens: R$ <?php echo $total; ?></span>
+              </div> 
                     </li>
-                    </li>
-
+                    <?php
+                endwhile;
+            endif;
+        endif;
+        ?> 
+        <!-- Botões para fechar a comanda -->
+        <li class="list-group-item py-3">
+            <div class="text-right">
+                <h4 class="text-dark mb-3">Valor Total: R$ <?php echo $total_geral; ?></h4>
+                <a href="pagamento.php" class="btn btn-danger btn-lg"> Pagar Comanda </a>
+            </div>
+        </li>
                     </br>
                     </br>
 
