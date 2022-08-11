@@ -18,12 +18,12 @@ Class Estabelecimento
       
     }
 
-    public function cadastrar($nome, $telefone, $endereco, $cnpj, $email, $senha)
+    public function cadastrar($nomeEc,$telefoneEc, $cepEc, $logradouroEc, $bairroEc, $localidadeEc, $ufEc, $cnpjEc, $emailEc, $senhaEc)
     {
         global $pdo;
         //verificar se já existe email cadastrado
         $sql = $pdo->prepare("SELECT id FROM estabelecimento WHERE email = :e");
-        $sql->bindValue(":e",$email);
+        $sql->bindValue(":e",$emailEc);
         $sql->execute();
         if($sql->rowCount() > 0)
         {
@@ -31,26 +31,30 @@ Class Estabelecimento
         }
         else
         { //cadastrar email não cadastrado
-            $sql = $pdo->prepare("INSERT INTO estabelecimento (nome, telefone, endereco, cnpj, email, senha) VALUES (:n, :t, :en, :c, :e, :s)");
-            $sql->bindValue(":n",$nome);
-            $sql->bindValue(":t",$telefone);
-            $sql->bindValue(":en",$endereco);
-            $sql->bindValue(":c",$cnpj);     
-            $sql->bindValue(":e",$email);
-            $sql->bindValue(":s",md5($senha));
+            $sql = $pdo->prepare("INSERT INTO estabelecimento (nome, telefone, cep, logradouro, bairro, cidade, uf, cnpj, email, senha) VALUES (:n, :t, :cep, :en, :b, :l, :uf, :c, :e, :s)");
+            $sql->bindValue(":n",$nomeEc);
+            $sql->bindValue(":t",$telefoneEc);
+            $sql->bindValue(":cep",$cepEc);
+            $sql->bindValue(":en",$logradouroEc);
+            $sql->bindValue(":b",$bairroEc);
+            $sql->bindValue(":l",$localidadeEc);
+            $sql->bindValue(":uf",$ufEc);
+            $sql->bindValue(":c",$cnpjEc);     
+            $sql->bindValue(":e",$emailEc);
+            $sql->bindValue(":s",md5($senhaEc));
             $sql->execute();
             return true;
         }        
     }
-//teste
-    public function logar($email, $senha)
+
+    public function logar($emailEc, $senhaEc)
     {
         global $pdo;
         //verificar se está cadatrado
         
         $sql = $pdo->prepare("SELECT id FROM estabelecimento WHERE email = :e AND senha = :s");
-        $sql->bindValue(":e",$email);
-        $sql->bindValue(":s",md5($senha));
+        $sql->bindValue(":e",$emailEc);
+        $sql->bindValue(":s",md5($senhaEc));
         $sql->execute();
         if($sql->rowCount()>0){ //entrar no sistema
             $dado = $sql->fetch();

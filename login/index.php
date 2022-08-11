@@ -90,30 +90,19 @@
                 <!-- Coluna cadastro estabelecimento -->
                 <div class="col-md-6 login-form-2">
                     <h3>Registro</h3>
-                    <form>
+                    <form method="POST">
                         <div class="form-group"> <input type="text" class="form-control" name="nomeEc" placeholder="Nome do Estabelecimeto" maxlength="30"> </div>
                         <div class="form-group"> <input type="text" class="form-control" name="telefoneEc" placeholder="Telefone" maxlength="30"> </div>
-                        <div class="form-group">
-                        <input type="text" class="form-control" maxlength="9" id="cep" name="cepUc" placeholder="CEP: 00000-000">
-                    </div>
-                    <div class="form-group"> 
-                        <input type="text" class="form-control" id="logradouro" name="logadoroUc"  placeholder="Rua:">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="bairro" name="bairroUc" placeholder="Bairro"> 
-                    </div>
-                    <div class="form-group"> 
-                        <input type="text" class="form-control" id="localidade" name="localidadeUc" placeholder="Cidade">
-                    </div>
-                    <div class="form-group"> 
-                        <input type="text" class="form-control" id="uf" name="uf" placeholder="Estado">
-                    </div> 
+                        <div class="form-group"> <input type="text" class="form-control" maxlength="9" id="cep" name="cepEc" placeholder="CEP: 00000-000"> </div>
+                        <div class="form-group"> <input type="text" class="form-control" id="logradouro" name="logradouroEc"  placeholder="Rua: ************, N°:"> </div>
+                        <div class="form-group"> <input type="text" class="form-control" id="bairro" name="bairroEc" placeholder="Bairro"> </div>
+                        <div class="form-group"> <input type="text" class="form-control" id="localidade" name="localidadeEc" placeholder="Cidade"> </div>
+                        <div class="form-group"> <input type="text" class="form-control" id="uf" name="ufEc" placeholder="Estado"> </div> 
                         <div class="form-group"> <input type="text" class="form-control" name="cnpjEc" placeholder="CNPJ" maxlength="19"> </div>
                         <div class="form-group"> <input type="email" class="form-control" name="emailEc" placeholder="Usuário" maxlength="50"> </div>
                         <div class="form-group"> <input type="password" class="form-control" name="senhaEc" placeholder="Senha" maxlength="15"> </div>
                         <div class="form-group"> <input type="password" class="form-control" name="confSenhaEc" placeholder="Confirmar Senha" maxlength="15"> </div>
-                        <div class="form-group"> <input type="submit" class="btnSubmit" value="Cadastrar" /> </div>
-                               
+                        <div class="form-group"> <input type="submit" class="btnSubmit" value="Cadastrar" /> </div>     
                     </form>
                     <?php
                         //verificar se clicou no botão
@@ -121,23 +110,23 @@
                         {
                             $nomeEc = addslashes($_POST['nomeEc']);
                             $telefoneEc = addslashes($_POST['telefoneEc']);
-                            $cepUc = addslashes($_POST['cepEc']);
-                            $logadoroUc =addslashes($_POST['logadouroEc']);
-                            $bairroUc = addslashes($_POST['bairroEc']);
-                            $localidadeUc = addslashes($_POST['localidadeEc']);
-                            $ufUc = addslashes($_POST['ufEc']);
+                            $cepEc = addslashes($_POST['cepEc']);
+                            $logradouroEc =addslashes($_POST['logradouroEc']);
+                            $bairroEc = addslashes($_POST['bairroEc']);
+                            $localidadeEc = addslashes($_POST['localidadeEc']);
+                            $ufEc = addslashes($_POST['ufEc']);
                             $cnpjEc = addslashes($_POST['cnpjEc']);
                             $emailEc = addslashes($_POST['emailEc']);
                             $senhaEc = addslashes($_POST['senhaEc']);
                             $confirmarSenhaEc = addslashes($_POST['confSenhaEc']);
                             
                             //verificar se está vazio
-                            if(!empty($nomeEc) && !empty($telefoneEc) && !empty($cepEc)  && !empty($logadoroEc)  && !empty($bairroEc)  && !empty($ufEc) && !empty($cnpjEc) && !empty($emailEc) && !empty($senhaEc) && !empty($confirmarSenhaEc))
+                            if(!empty($nomeEc) && !empty($telefoneEc) && !empty($cepEc)  && !empty($logradouroEc)  && !empty($bairroEc)  && !empty($ufEc) && !empty($cnpjEc) && !empty($emailEc) && !empty($senhaEc) && !empty($confirmarSenhaEc))
                             {
                                 $e->conectar("jglogin","localhost","root","");
                                 if($e->msgErro == ""){
                                     if($senhaEc == $confirmarSenhaEc){
-                                        if($e->cadastrar($nomeEc,$telefoneEc, $cepEc, $logadouroEc, $bairroEc, $localidadeEc, $ufEc, $cnpjEc, $emailEc, $senhaEc))
+                                        if($e->cadastrar($nomeEc,$telefoneEc, $cepEc, $logradouroEc, $bairroEc, $localidadeEc, $ufEc, $cnpjEc, $emailEc, $senhaEc))
                                         {
                                             ?>
                                             <div id="msg-sucesso">
