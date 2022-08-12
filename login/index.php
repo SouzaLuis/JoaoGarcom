@@ -41,8 +41,7 @@
                     <form name="frmestab" method="POST" action="index.php">
                         <div class="form-group"> <input type="email" class="form-control" name="emailEl" placeholder="Usuário"> </div>
                         <div class="form-group"> <input type="password" class="form-control" name="senhaEl" placeholder="Senha"> </div>
-                        <div class="form-group"> <input type="submit" class="btnSubmit" value="Acessar"> </div>
-                        <div class="form-group"><a href="#" class="ForgetPwd" value="Login">Esqueci minha senha...</a> </div>       
+                        <div class="form-group"> <input type="submit" class="btnSubmit" value="Acessar"> </div>      
                     </form>
                     <?php
                         if(isset($_POST['emailEl']))
@@ -166,8 +165,8 @@
                         ?>
                 </div>
             </div>
-            </div>
         </div>
+    </div>
 
         
         
@@ -182,7 +181,6 @@
                         <div class="form-group"> <input type="email" class="form-control" name="emailUl" placeholder="Usuário"> </div>
                         <div class="form-group"> <input type="password" class="form-control" name="senhaUl" placeholder="Senha"> </div>
                         <div class="form-group"> <input type="submit" class="btnSubmit" value="Acessar"> </div>
-                        <div class="form-group"> <a href="#" class="ForgetPwd">Esqueci minha senha...</a></div>
                     </form>
                     <?php
                         if(isset($_POST['emailUl']))
@@ -229,33 +227,19 @@
                 </div>
                 <div class="col-md-6 login-form-2">
                     <h3>Cadastrar</h3>
-                    <form>
-
-               
-
-                    <div class="form-group"> <input type="text" class="form-control" name="nomeUc" placeholder="Nome Completo " maxlength="30"> </div>
+                    <form method="POST">
+                        <div class="form-group"> <input type="text" class="form-control" name="nomeUc" placeholder="Nome Completo " maxlength="30"> </div>
                         <div class="form-group"> <input type="text" class="form-control" name="telefoneUc" placeholder="Telefone" maxlength="30"> </div>
-                     <div class="form-group">
-                        <input type="text" class="form-control" maxlength="9" id="cep" name="cepUc" placeholder="CEP: 00000-000">
-                    </div>
-                    <div class="form-group"> 
-                        <input type="text" class="form-control" id="logradouro" name="logadoroUc"  placeholder="Rua:">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="bairro" name="bairroUc" placeholder="Bairro"> 
-                    </div>
-                    <div class="form-group"> 
-                        <input type="text" class="form-control" id="localidade" name="localidadeUc" placeholder="Cidade">
-                    </div>
-                    <div class="form-group"> 
-                        <input type="text" class="form-control" id="uf" name="uf" placeholder="Estado">
-                    </div> 
-                        <div class="form-group"> <input type="text" class="form-control" name="cnpjUc" placeholder="CPF" maxlength="19"> </div>
+                        <div class="form-group"> <input type="text" class="form-control" maxlength="9" id="cepU" name="cepUc" placeholder="CEP: 00000-000"></div>
+                        <div class="form-group"> <input type="text" class="form-control" id="logradouroU" name="logradouroUc"  placeholder="Rua: ************, N°:"> </div>
+                        <div class="form-group"> <input type="text" class="form-control" id="bairroU" name="bairroUc" placeholder="Bairro"> </div>
+                        <div class="form-group"> <input type="text" class="form-control" id="localidadeU" name="localidadeUc" placeholder="Cidade"> </div>
+                        <div class="form-group"> <input type="text" class="form-control" id="ufU" name="ufUc" placeholder="Estado"> </div>
+                        <div class="form-group"> <input type="text" class="form-control" name="cpfUc" placeholder="CPF" maxlength="19"> </div>
                         <div class="form-group"> <input type="email" class="form-control" name="emailUc" placeholder="Email" maxlength="50"> </div>
                         <div class="form-group"> <input type="password" class="form-control" name="senhaUc" placeholder="Senha" maxlength="15"> </div>
                         <div class="form-group"> <input type="password" class="form-control" name="confSenhaUc" placeholder="Confirmar Senha" maxlength="15"> </div>
-                        <div class="form-group"> <input type="submit" class="btnSubmit" value="Acessar" /> </div>
-                        <div class="form-group"><a href="#" class="ForgetPwd" value="Login">Esqueci minha senha</a></div>
+                        <div class="form-group"> <input type="submit" class="btnSubmit" value="Cadastrar" /> </div>
                     </form>
                     <?php
 //verificar se clicou no botão
@@ -264,7 +248,7 @@ if(isset($_POST['nomeUc']))
     $nomeUc = addslashes($_POST['nomeUc']);
     $telefoneUc = addslashes($_POST['telefoneUc']);
     $cepUc = addslashes($_POST['cepUc']);
-    $logadoroUc =addslashes($_POST['logadouroUc']);
+    $logradouroUc =addslashes($_POST['logradouroUc']);
     $bairroUc = addslashes($_POST['bairroUc']);
     $localidadeUc = addslashes($_POST['localidadeUc']);
     $ufUc = addslashes($_POST['ufUc']);
@@ -273,14 +257,13 @@ if(isset($_POST['nomeUc']))
     $senhaUc = addslashes($_POST['senhaUc']);
     $confirmarSenhaUc = addslashes($_POST['confSenhaUc']);
    
-
     //verificar se está vazio
-    if(!empty($nomeUc) && !empty($telefoneUc)  && !empty($cepUc)  && !empty($logadoroUc)  && !empty($bairroUc)  && !empty($ufUc) && !empty($cpfUc) && !empty($emailUc) && !empty($senhaUc) && !empty($confirmarSenhaUc))
+    if(!empty($nomeUc) && !empty($telefoneUc)  && !empty($cepUc)  && !empty($logradouroUc)  && !empty($localidadeUc) && !empty($bairroUc)  && !empty($ufUc) && !empty($cpfUc) && !empty($emailUc) && !empty($senhaUc) && !empty($confirmarSenhaUc))
     {
         $u->conectar("jglogin","localhost","root","");
         if($u->msgErro == ""){
-            if($senha == $confirmarSenha){
-                if($u->cadastrar($nomeUc,$telefoneUc, $cepUc, $logadouroUc, $bairroUc, $localidadeUc, $ufUc ,$cpfUc,$emailUc,$senhaUc))
+            if($senhaUc == $confirmarSenhaUc){
+                if($u->cadastrar($nomeUc,$telefoneUc, $cepUc, $logradouroUc, $bairroUc, $localidadeUc, $ufUc ,$cpfUc,$emailUc,$senhaUc))
                 {
                     ?>
                     <div id="msg-sucesso">
@@ -327,7 +310,6 @@ if(isset($_POST['nomeUc']))
         </div>
     </div>
 </div>
-    <script src="apiEndereço/Cadastro_Endereco.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>

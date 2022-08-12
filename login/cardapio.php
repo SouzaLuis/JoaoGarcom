@@ -40,15 +40,7 @@ $c = new Comanda;
             $result = mysqli_query($conexao, $query);
             $dados = mysqli_fetch_assoc($dado);
             
-        ?>
-            <div class="text-center">
-            <div class="input-group input-group-sm mb-3" style="width: 20%;padding: 10px">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">Mesa n°</span>
-                </div>
-                <input type="text" class="form-control" aria-label="Exemplo do tamanho do input" aria-describedby="inputGroup-sizing-sm" placeholder="<?php echo $dados['numero_mesa']; ?>" style="text-align:center" disabled>
-            </div>
-            </div>
+        ?>  
         <?php
             if($result):
                 if(mysqli_num_rows($result)>0):

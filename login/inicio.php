@@ -99,14 +99,6 @@
             <?php endwhile;?>
           </select>
         <br>
-        <div class="text-center">
-            <div class="input-group input-group-sm mb-3" style="width: 20%;padding: 10px">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">Mesa n°</span>
-                </div>
-                <input name='mesa' type="text" class="form-control" aria-label="Exemplo do tamanho do input" aria-describedby="inputGroup-sizing-sm" placeholder="99" style="text-align:center" required>
-            </div>
-        </div>
         <input type="submit" style="width: 300px" name="botao" class="btn btn-danger btn-lg active" value="Entrar no estabelecimento!">
         <input type="hidden" name="id_usuario" value="<?php echo $id_usuario; ?>">
         </form>
@@ -121,14 +113,13 @@
       $valor = 0.00;
       $id_estabelecimento = addslashes($_POST['estabelecimentos']);
       $id_usuario = addslashes($_POST['id_usuario']);
-      $mesa = addslashes($_POST['mesa']);
       $pagamento = 0;
 
         //verificar se está vazio
-        if(!empty($id_estabelecimento) && !empty($id_usuario) && !empty($mesa)){
+        if(!empty($id_estabelecimento) && !empty($id_usuario)){
             $c->conectar("jglogin","localhost","root","");
             if($c->msgErro == ""){
-                if($c->abrir_comanda($valor,$id_estabelecimento, $id_usuario, $mesa, $pagamento))
+                if($c->abrir_comanda($valor,$id_estabelecimento, $id_usuario, $pagamento))
                 {
                     if($c->gerar_comanda($id_usuario, $id_estabelecimento)){}
                 }            
@@ -156,7 +147,7 @@
         );
         scanner.addListener('scan', function(content) {
           alert('Escaneou o conteudo: ' + content);
-            window.open(content, "_blank");
+            // window.open(content, "_blank");
         });
         Instascan.Camera.getCameras().then(cameras => 
           {

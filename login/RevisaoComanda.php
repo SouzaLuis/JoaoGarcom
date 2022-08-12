@@ -11,6 +11,14 @@ if (!isset($_SESSION['id_comanda'])) {
 
 $id_usuario = $_SESSION['id'];
 $id_comanda = $_SESSION['id_comanda'];
+$numero_mesa = null;
+if(!empty($_POST['mesa'])){
+  $intermediador = $_POST['mesa'];
+}
+$numero_mesa = $intermediador;
+
+require_once 'classes/comanda.php';
+$c = new Comanda;
 ?>
 
 
@@ -37,12 +45,36 @@ $id_comanda = $_SESSION['id_comanda'];
     <nav class="navbar" style="background-color: rgb(160,4,4);">
       <h1 class="navbar mx-auto text-white">Revisão da Comanda</h1>
     </nav>
+    <form method="POST" action="">
+      <div class="input-group mb-3" style="width: 20%;padding: 10px">
+      <input name='mesa' id='mesa' type="text" class="form-control" aria-label="Exemplo do tamanho do input" aria-describedby="inputGroup-sizing-sm" placeholder="Mesa N°:" value="<?php echo $numero_mesa; ?>" style="text-align:center" required>
+        <div class="input-group-append">
+          <input type="hidden" name="comanda" value="<?php echo $id_comanda; ?>">
+          <input type="submit" id='salvar' name="salvar" onclick='salvar.disabled=true;mesa.disabled=true' style="background-color: rgb(160,4,4);" class="btn btn-danger" value="Salvar">
+        </div>
+      </div>
+    </form>
+    <?php
+        //verificar se clicou no botão
+        if(isset($_POST['mesa'])){
+          $mesa = addslashes($_POST['mesa']);
+          $id_comanda_mesa = addslashes($_POST['comanda']);
 
+          //verificar se está vazio
+          if(!empty($mesa) && !empty($id_comanda_mesa)){
+            if($c->msgErro == ""){
+              if($c->atualiza_mesa($mesa,$id_comanda_mesa))
+              {
+              }            
+            }else{}
+          }
+          }
+        ?>
     <div class="container">
       <br>
       <?php
         $conexao = mysqli_connect('localhost', 'root', '','jglogin');
-        $query = "SELECT p.imagem, p.nome, p.descricao, p.preco, pc.quantidade, c.id_estabelecimento FROM produto_comanda pc INNER JOIN produtos p ON p.id = pc.id_produto INNER JOIN comanda c ON c.id = pc.id_comanda WHERE pc.id_comanda = ".$id_comanda." AND c.id_usuario = ".$id_usuario." ORDER BY pc.id_produto ASC";
+        $query = "SELECT p.imagem, p.nome, p.descricao, p.preco, pc.quantidade, c.id_estabelecimento FROM produto_comanda pc INNER JOIN produtos p ON p.id = pc.id_produto INNER JOIN comanda c ON c.id = pc.id_comanda WHERE pc.id_comanda = ".$id_comanda." AND c.id_usuario = ".$id_usuario." AND c.pagamento=0 ORDER BY pc.id_produto ASC";
         $result = mysqli_query($conexao, $query);
 
         $total = 0;

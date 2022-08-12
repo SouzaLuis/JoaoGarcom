@@ -18,13 +18,12 @@ Class Comanda
         }
     }
 
-    public function abrir_comanda($valor,$id_estabelecimento, $id_usuario, $mesa, $pagamento){
+    public function abrir_comanda($valor,$id_estabelecimento, $id_usuario, $pagamento){
         global $pdo;   
-        $sql = $pdo->prepare("INSERT INTO comanda (valor, data_comanda, id_estabelecimento, id_usuario, numero_mesa, pagamento) VALUES (:v, NOW(), :id_est, :id_user, :n, :p)");
+        $sql = $pdo->prepare("INSERT INTO comanda (valor, data_comanda, id_estabelecimento, id_usuario, pagamento) VALUES (:v, NOW(), :id_est, :id_user, :p)");
         $sql->bindValue(":v",$valor);
         $sql->bindValue(":id_est",$id_estabelecimento);
         $sql->bindValue(":id_user",$id_usuario);
-        $sql->bindValue(":n",$mesa);
         $sql->bindValue(":p",$pagamento);
         $sql->execute();
         return true;
@@ -59,6 +58,23 @@ Class Comanda
         else {
             return false;
         }
+    }
+
+    public function atualiza_mesa($mesa, $id_comanda_mesa){
+        global $pdo;
+        $sql = $pdo->prepare("UPDATE comanda SET numero_mesa = :n WHERE id = :id"); 
+        $sql->bindValue(":n",$mesa);
+        $sql->bindValue(":id",$id_comanda_mesa);
+        $sql->execute();
+        return true;
+    }
+    public function verifica_mesa($id_usuario, $id_estabelecimento){
+        global $pdo;
+        $sql = $pdo->prepare("SELECT numero_mesa FROM comanda WHERE id_usuario = :id_user AND id_estabelecimento = :id_est AND pagamento = 0"); 
+        $sql->bindValue(":id_user",$id_usuario);
+        $sql->bindValue(":id_est",$id_estabelecimento);
+        $sql->execute();
+        return true;
     }
 }
 
