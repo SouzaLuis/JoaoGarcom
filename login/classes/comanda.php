@@ -1,8 +1,7 @@
 <?php
-// Ao selecionar um estabelecimento na tela inicial, criar um registro na tabela de comanda, enviando o id do usuario, do estabelecimento, valor = 0 e a data atual.
-// Após isso, todos os pedidos feitos na tela de cardápio, enviar também o id da comanda criado anteriormente para a tabela produto_comanda
-Class Comanda
-{
+
+Class Comanda{
+    
     private $pdo;
     public $msgErro = "";
    

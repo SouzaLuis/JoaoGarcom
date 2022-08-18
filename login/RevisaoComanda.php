@@ -12,13 +12,18 @@ if (!isset($_SESSION['id_comanda'])) {
 $id_usuario = $_SESSION['id'];
 $id_comanda = $_SESSION['id_comanda'];
 $numero_mesa = null;
-if(!empty($_POST['mesa'])){
-  $intermediador = $_POST['mesa'];
-}
-$numero_mesa = $intermediador;
 
 require_once 'classes/comanda.php';
 $c = new Comanda;
+
+$conexao = mysqli_connect('localhost', 'root', '','jglogin');
+$querie = "SELECT numero_mesa FROM comanda WHERE id=".$id_comanda." AND id_usuario=".$id_usuario." AND pagamento = 0";
+$resultado = mysqli_query($conexao, $querie);
+if(!empty($resultado)){
+  if($mesas = mysqli_fetch_assoc($resultado)){
+    $numero_mesa = $mesas['numero_mesa'];
+  }
+}
 ?>
 
 
@@ -45,12 +50,12 @@ $c = new Comanda;
     <nav class="navbar" style="background-color: rgb(160,4,4);">
       <h1 class="navbar mx-auto text-white">Revisão da Comanda</h1>
     </nav>
-    <form method="POST" action="">
+    <form method="POST">
       <div class="input-group mb-3" style="width: 20%;padding: 10px">
-      <input name='mesa' id='mesa' type="text" class="form-control" aria-label="Exemplo do tamanho do input" aria-describedby="inputGroup-sizing-sm" placeholder="Mesa N°:" value="<?php echo $numero_mesa; ?>" style="text-align:center" required>
+      <input name='mesa' id='mesa' type="text" class="form-control" aria-label="Exemplo do tamanho do input" aria-describedby="inputGroup-sizing-sm" placeholder="Mesa N°: <?php echo $numero_mesa; ?>" <?php echo $numero_mesa; ?> style="text-align:center" required>
         <div class="input-group-append">
           <input type="hidden" name="comanda" value="<?php echo $id_comanda; ?>">
-          <input type="submit" id='salvar' name="salvar" onclick='salvar.disabled=true;mesa.disabled=true' style="background-color: rgb(160,4,4);" class="btn btn-danger" value="Salvar">
+          <input type="submit" id='salvar' name="salvar" style="background-color: rgb(160,4,4);" class="btn btn-danger" value="Salvar">
         </div>
       </div>
     </form>
@@ -59,12 +64,13 @@ $c = new Comanda;
         if(isset($_POST['mesa'])){
           $mesa = addslashes($_POST['mesa']);
           $id_comanda_mesa = addslashes($_POST['comanda']);
-
           //verificar se está vazio
           if(!empty($mesa) && !empty($id_comanda_mesa)){
+            $c->conectar("jglogin","localhost","root","");
             if($c->msgErro == ""){
               if($c->atualiza_mesa($mesa,$id_comanda_mesa))
               {
+              header("Refresh:0");
               }            
             }else{}
           }

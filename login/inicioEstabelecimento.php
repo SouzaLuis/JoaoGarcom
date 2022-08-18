@@ -6,6 +6,7 @@
         exit;
     }
     $id_estabelecimento = $_SESSION['id'];
+
     require_once 'classes/mesa.php';
     $u = new Mesa;
 ?>
@@ -55,7 +56,7 @@
 
             if(isset($_POST['quantidade']))
             {
-                 $quantidade = addslashes($_POST['quantidade']);
+                $quantidade = addslashes($_POST['quantidade']);
                 $id_estabelecimento = addslashes($_POST['id_estabelecimento']);
                 //verificar se está vazio
                 if(!empty($quantidade)){
@@ -73,26 +74,21 @@
             }            
             ?>
         </div>
-    </div>
-    <div class='row'>
-        <div class="container-fluid" style="width:100%;"> 
-            <?php
+        <?php
             $conexao = mysqli_connect('localhost', 'root', '','jglogin');
             $query = 'SELECT * FROM mesa m WHERE m.id_estabelecimento = '.$id_estabelecimento;
             $result = mysqli_query($conexao, $query);
             if($result):
                 if(mysqli_num_rows($result)>0):
-                    echo "<div class='row'>";
-                    $col=1;
                     while($mesas = mysqli_fetch_assoc($result)):
-                        for($i=1;$i<=$mesas['quantidade'];$i++):
                         ?>
-                            <div class="col-sm-3 col-md-3">
+                            <div class="col-sm-12 col-md-12">
                                 <div class="card-group">
                                     <div class="card text-center">
                                         <div class="card-body">
                                             <form method="POST">
-                                                <h4 class="card-tittle"><?php echo $i ?></h4>
+                                                <h4 class="card-tittle"><b>Quantidade de Mesas</b></h4>
+                                                <h4 class="card-tittle"><?php echo $mesas['quantidade']; ?></h4>
                                                 <img src="imagens/mesa.png" style="width: 150px; height: 100px; border-radius: 35px; margin-bottom:15px" class="img-responsive">                                                
                                             </form>
                                         </div>
@@ -100,17 +96,37 @@
                                 </div>
                             </div>
                         <?php
-                        $col++;
-                        if($col>4){
-                            echo "</div>";
-                            echo "<div class='row'>";
-                            $col=1;
-                        }
-                        endfor;
                     endwhile;
                 endif;
             endif;              
-            ?>
+        ?>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <?php
+                $query_comanda = 'SELECT c.id_usuario, c.numero_mesa, u.nome FROM comanda c INNER JOIN usuario u ON u.id = c.id_usuario INNER JOIN produto_comanda pc ON pc.id_comanda = c.id WHERE c.id_estabelecimento = '.$id_estabelecimento.' AND c.pagamento = 0';
+                $result_comanda = mysqli_query($conexao, $query_comanda);
+                if($result_comanda):
+                    if(mysqli_num_rows($result_comanda)>0):
+                        while($comanda = mysqli_fetch_assoc($result_comanda)):
+                            ?>
+                                <div class="col-sm-12 col-md-12">
+                                    <div class="card-group">
+                                        <div class="card text-center">
+                                            <div class="card-body">
+                                                <form method="POST">
+                                                    <h4 class="card-tittle"><b>N° Mesa: <?php echo $comanda['numero_mesa']; ?></b></h4>
+                                                    <h4 class="card-tittle"><b>Cliente:</b><?php echo $comanda['nome']; ?></h4>                                              
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php
+                        endwhile;
+                    endif;
+                endif;              
+            ?> 
         </div>
     </div>
 </body>
