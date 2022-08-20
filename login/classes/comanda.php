@@ -118,6 +118,32 @@ Class Comanda{
         return true;
     }
     
+    public function diminui_produto_comanda($id){
+        $quantidade = 0;
+        $valor = 0;
+        $unidade = 0;
+        global $pdo;
+        $sql = $pdo->prepare("SELECT pc.quantidade, pc.valor, p.preco FROM produto_comanda pc INNER JOIN produtos p ON p.id = pc.id_produto WHERE pc.id = :id");
+        $sql->bindValue(":id",$id);
+        $sql->execute();
+        if($sql->rowCount()>0){
+            $comanda = $sql->fetch(PDO::FETCH_ASSOC);
+            $quantidade = $comanda['quantidade'] - 1;
+            $unidade = $comanda['preco'];
+            $valor = $comanda['valor'] - $unidade;
+
+            $atualiza = $pdo->prepare("UPDATE produto_comanda SET quantidade = :q AND valor = :v WHERE id = :id");
+            $atualiza->bindValue(":q",$quantidade);
+            $atualiza->bindValue(":v",$valor);
+            $atualiza->bindValue(":id",$id);
+            $atualiza->execute();
+            echo "Passou 1";
+            return true;
+        } else{
+            echo "Passou 2";
+            return false;
+        }
+    }
 }
 
 ?>

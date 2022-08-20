@@ -38,6 +38,7 @@ if(!empty($resultado)){
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
   <!-- <link rel="stylesheet" href="css/style.css"> -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
   <title>João Garçom</title>
 </head>
 
@@ -80,7 +81,7 @@ if(!empty($resultado)){
       <br>
       <?php
         $conexao = mysqli_connect('localhost', 'root', '','jglogin');
-        $query = "SELECT p.imagem, p.nome, p.descricao, p.preco un, pc.quantidade, pc.valor valor_c, c.valor total, c.id_estabelecimento FROM produto_comanda pc INNER JOIN produtos p ON p.id = pc.id_produto INNER JOIN comanda c ON c.id = pc.id_comanda WHERE pc.id_comanda = ".$id_comanda." AND c.id_usuario = ".$id_usuario." AND c.pagamento=0 ORDER BY pc.id_produto ASC";
+        $query = "SELECT p.imagem, p.nome, p.descricao, p.preco un, pc.quantidade, pc.valor valor_c, pc.id id_prod_comanda, c.valor total, c.id_estabelecimento, c.id FROM produto_comanda pc INNER JOIN produtos p ON p.id = pc.id_produto INNER JOIN comanda c ON c.id = pc.id_comanda WHERE pc.id_comanda = ".$id_comanda." AND c.id_usuario = ".$id_usuario." AND c.pagamento=0 ORDER BY pc.id_produto ASC";
         $result = mysqli_query($conexao, $query);
 
         $total = 0;
@@ -115,34 +116,30 @@ if(!empty($resultado)){
 
             <!-- Divisao onde aumenta a quantidade/exclui -->
             <div class="col-6 offset-6 col-sm-6 offset-sm-6 col-md-4 offset-md-8 col-lg-3 offset-lg-0 col-xl-2 align-self-center mt-3">
-              <div class="input-group">
-
-                <button type="button" class="btn btn-outline-dark btn-sm">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentcolor" class="bi bi-caret-down" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M3.204 5 8 10.481 12.796 5H3.204zm-.753.659 4.796 5.48a1 1 0 001.506.0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 00-.753 1.659z"></path>
-                  </svg>
-                </button>
-
-                <input type="text" class="form-control text-center border-dark" value="<?php echo $produtos['quantidade']; ?>">
-
-                <button type="button" class="btn btn-outline-dark btn-sm">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentcolor" class="bi bi-caret-down" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M3.204 11 8 5.519 12.796 11H3.204zm-.753-.659 4.796-5.48a1 1 0 011.506.0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 01-.753-1.659z"></path>
-                  </svg>
-                </button>
-
-                <button type="button" class="btn btn-outline-danger border-dark btn-sm">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentcolor" class="bi bi-trash" viewBox="0 0 16 16">
-                    <path d="M5.5 5.5A.5.5.0 016 6v6a.5.5.0 01-1 0V6a.5.5.0 01.5-.5zm2.5.0a.5.5.0 01.5.5v6a.5.5.0 01-1 0V6a.5.5.0 01.5-.5zm3 .5a.5.5.0 00-1 0v6a.5.5.0 001 0V6z"></path>
-                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4 4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
-                  </svg>
-                </button>
-              </div>
+              <form method="post">
+                <div class="input-group">
+                  <input type="hidden" id="id_comanda" name="id_comanda" value="<?php echo $produtos['id_prod_comanda']; ?>">
+                  <button type="submit" name="diminuir"  class="btn btn-outline-dark btn-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentcolor" class="bi bi-caret-down" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M3.204 5 8 10.481 12.796 5H3.204zm-.753.659 4.796 5.48a1 1 0 001.506.0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 00-.753 1.659z"></path>
+                    </svg>
+                  </button>
+                  <input type="text" class="form-control text-center border-dark" value="<?php echo $produtos['quantidade']; ?>" disabled>
+                  <button type="submit" name="aumentar" class="btn btn-outline-dark btn-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentcolor" class="bi bi-caret-down" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M3.204 11 8 5.519 12.796 11H3.204zm-.753-.659 4.796-5.48a1 1 0 011.506.0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 01-.753-1.659z"></path>
+                    </svg>
+                  </button>
+                  <button type="submit" name="deletar" class="btn btn-outline-dark btn-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentcolor" class="bi bi-trash" viewBox="0 0 16 16">
+                      <path d="M5.5 5.5A.5.5.0 016 6v6a.5.5.0 01-1 0V6a.5.5.0 01.5-.5zm2.5.0a.5.5.0 01.5.5v6a.5.5.0 01-1 0V6a.5.5.0 01.5-.5zm3 .5a.5.5.0 00-1 0v6a.5.5.0 001 0V6z"></path>
+                      <path fill-rule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4 4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
+                    </svg>
+                  </button>
+                </div>
+              </form>
               <div class="text-right mt-2">
                 <small class="text-secondary">Valor un: R$ <?php echo $produtos['un']; ?></small><br>
-                <?php 
-                  
-                ?>
                 <span class="text-dark">Valor itens: R$ <?php echo $produtos['valor_c']; ?></span>
               </div>
             </div>
@@ -152,6 +149,23 @@ if(!empty($resultado)){
                 endwhile;
             endif;
         endif;
+        if(isset($_POST['diminuir'])){
+
+          $id = addslashes($_POST['id_comanda']);
+
+          //verificar se está vazio
+          if(!empty($id)){
+            echo "Passou vazio";
+            $c->conectar("jglogin","localhost","root","");
+            if($c->msgErro == ""){
+              echo "Passou sem msg";
+              if($c->diminui_produto_comanda($id)){
+                echo "Passou função";
+                // header("Refresh:0");
+              }            
+            }
+          }
+        }
         ?>
         <!-- Botões para fechar a comanda -->
         <li class="list-group-item py-3">
