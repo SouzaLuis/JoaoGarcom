@@ -45,7 +45,7 @@ $id_comanda = $_SESSION['id_comanda'];
                 <br>
                 <?php
                     $conexao = mysqli_connect('localhost', 'root', '','jglogin');
-                    $query = "SELECT p.imagem, p.nome, p.descricao, p.preco, pc.quantidade, c.id_estabelecimento, u.nome, c.numero_mesa FROM produto_comanda pc INNER JOIN produtos p ON p.id = pc.id_produto INNER JOIN comanda c ON c.id = pc.id_comanda INNER JOIN usuario u ON u.id = c.id_usuario WHERE pc.id_comanda = ".$id_comanda." AND c.id_usuario = ".$id_usuario." ORDER BY pc.id_produto ASC";
+                    $query = "SELECT p.imagem, p.nome, p.descricao, p.preco un, pc.quantidade, pc.valor valor_c, c.valor total, c.id_estabelecimento FROM produto_comanda pc INNER JOIN produtos p ON p.id = pc.id_produto INNER JOIN comanda c ON c.id = pc.id_comanda WHERE pc.id_comanda = ".$id_comanda." AND c.id_usuario = ".$id_usuario." AND c.pagamento=0 ORDER BY pc.id_produto ASC";
                     $query_usuario = "SELECT u.nome, c.numero_mesa FROM comanda c INNER JOIN usuario u ON u.id = c.id_usuario WHERE u.id = ".$id_usuario." and c.id = ".$id_comanda." ORDER BY u.id ASC";
                     $result = mysqli_query($conexao, $query);
                     $result_usuario = mysqli_query($conexao, $query_usuario);
@@ -99,14 +99,11 @@ $id_comanda = $_SESSION['id_comanda'];
                         
                         </div>
                         <div class="text-right mt-2">
-                            <small class="text-secondary">Valor un: R$ <?php echo $produtos['preco']; ?> ( Qtd: <?php echo $produtos['quantidade']; ?> )</small><br>
+                            <small class="text-secondary">Valor un: R$ <?php echo $produtos['un']; ?> ( Qtd: <?php echo $produtos['quantidade']; ?> )</small><br>
                             <?php 
-                                $preco_un = $produtos['preco'];
-                                $quantidade = $produtos['quantidade'];
-                                $total = $preco_un * $quantidade;
-                                $total_geral = $total_geral + $total;
+                                $total_geral = $produtos['total'];
                             ?>
-                            <span class="text-dark">Valor itens: R$ <?php echo $total; ?></span>
+                            <span class="text-dark">Valor itens: R$ <?php echo $produtos['valor_c']; ?></span>
               </div> 
                     </li>
                     <?php

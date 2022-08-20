@@ -6,7 +6,9 @@
         exit;
     }
     $id_estabelecimento = $_SESSION['id'];
-
+    if(isset($_POST['id_comanda'])){
+        header("Refresh:0");
+    }
     require_once 'classes/mesa.php';
     $u = new Mesa;
 ?>
@@ -21,6 +23,8 @@
     <title>Tela Inicial Estabelecimento</title>
 </head>
 <body style="min-width:372px;">
+    <header>
+    </header>
     <nav class="navbar" style="background-color: rgb(160,4,4);">
         <ul class="nav nav-tabs">
             <li class="nav-item">
@@ -104,7 +108,7 @@
     <div class="container-fluid">
         <div class="row">
             <?php
-                $query_comanda = 'SELECT c.id_usuario, c.numero_mesa, u.nome FROM comanda c INNER JOIN usuario u ON u.id = c.id_usuario INNER JOIN produto_comanda pc ON pc.id_comanda = c.id WHERE c.id_estabelecimento = '.$id_estabelecimento.' AND c.pagamento = 0';
+                $query_comanda = 'SELECT c.id, c.id_usuario, c.id_estabelecimento, c.numero_mesa, c.valor, u.nome FROM comanda c INNER JOIN usuario u ON u.id = c.id_usuario WHERE c.id_estabelecimento = '.$id_estabelecimento.' AND c.pagamento = 0';
                 $result_comanda = mysqli_query($conexao, $query_comanda);
                 if($result_comanda):
                     if(mysqli_num_rows($result_comanda)>0):
@@ -115,19 +119,60 @@
                                         <div class="card text-center">
                                             <div class="card-body">
                                                 <form method="POST">
-                                                    <h4 class="card-tittle"><b>N° Mesa: <?php echo $comanda['numero_mesa']; ?></b></h4>
-                                                    <h4 class="card-tittle"><b>Cliente:</b><?php echo $comanda['nome']; ?></h4>                                              
+                                                    <h4 class="card-tittle" style="float: left;"><b>N° Mesa:</b> <?php echo $comanda['numero_mesa']; ?></h4>
+                                                    <h4 class="card-tittle" style="float: right;"><b>Cliente:</b> <?php echo $comanda['nome']; ?></h4>
+                                                    <h4 class="card-tittle" style="float: center;"><b>Status:</b> Em aberto</h4>
+                                                    <br><br>
+                                                    <h4 class="card-tittle" style="float: left;"><b>Valor Total:</b> R$ <?php echo $comanda['valor']; ?></h4>
+                                                    <button style="background-color: rgb(160,4,4); width:150px; float: right; margin-right: 10px;" type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target=".bd-example-modal-lg">Detalhes</button>
+                                                    <input type="hidden" name="id_comanda" value="<?php echo $comanda['id']; ?>">
+                                                    <input type="hidden" name="id_estabelecimento" value="<?php echo $comanda['id_estabelecimento']; ?>">
+                                                    <input type="hidden" name="id_usuario" value="<?php echo $comanda['id_usuario']; ?>">
+                                                    <input type="submit" id="pago" name="pago" class="btn btn-success btn-lg" value="Pago" style="float: right; width: 150px; margin-right: 10px;">
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header" style="background-color: rgb(160,4,4); color: #FFFFFF">
+                                            <h5 class="modal-title" id="exampleModalLabel">Detalhes Comanda - <?php echo $comanda['nome']; ?></h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                            <div class="modal-body">
+                                                <div class="form-group"><h4>Teste</h4></div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
                             <?php
+                                if(isset($_POST['id_comanda'])){
+                                    $id_comanda = addslashes($_POST['id_comanda']);
+                                    $id_estabelecimento = addslashes($_POST['id_estabelecimento']);
+                                    $id_usuario = addslashes($_POST['id_usuario']);
+                                    
+                                    if(!empty($id_comanda) && !empty($id_estabelecimento) && !empty($id_usuario)){
+                                        $u->conectar("jglogin","localhost","root","");
+                                        if($u->msgErro == ""){
+                                            if($u->fechar_mesa($id_comanda, $id_estabelecimento, $id_usuario)){}
+                                        }
+                                    }
+                                }
                         endwhile;
                     endif;
-                endif;              
-            ?> 
+                endif;
+            ?>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>

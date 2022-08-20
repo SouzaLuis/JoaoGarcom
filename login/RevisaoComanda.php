@@ -55,7 +55,7 @@ if(!empty($resultado)){
       <input name='mesa' id='mesa' type="text" class="form-control" aria-label="Exemplo do tamanho do input" aria-describedby="inputGroup-sizing-sm" placeholder="Mesa N°: <?php echo $numero_mesa; ?>" <?php echo $numero_mesa; ?> style="text-align:center" required>
         <div class="input-group-append">
           <input type="hidden" name="comanda" value="<?php echo $id_comanda; ?>">
-          <input type="submit" id='salvar' name="salvar" style="background-color: rgb(160,4,4);" class="btn btn-danger" value="Salvar">
+          <input type="submit" id='salvar' name="salvar" style="background-color: rgb(160,4,4);" class="btn btn-danger" value="Salvar" required>
         </div>
       </div>
     </form>
@@ -80,11 +80,10 @@ if(!empty($resultado)){
       <br>
       <?php
         $conexao = mysqli_connect('localhost', 'root', '','jglogin');
-        $query = "SELECT p.imagem, p.nome, p.descricao, p.preco, pc.quantidade, c.id_estabelecimento FROM produto_comanda pc INNER JOIN produtos p ON p.id = pc.id_produto INNER JOIN comanda c ON c.id = pc.id_comanda WHERE pc.id_comanda = ".$id_comanda." AND c.id_usuario = ".$id_usuario." AND c.pagamento=0 ORDER BY pc.id_produto ASC";
+        $query = "SELECT p.imagem, p.nome, p.descricao, p.preco un, pc.quantidade, pc.valor valor_c, c.valor total, c.id_estabelecimento FROM produto_comanda pc INNER JOIN produtos p ON p.id = pc.id_produto INNER JOIN comanda c ON c.id = pc.id_comanda WHERE pc.id_comanda = ".$id_comanda." AND c.id_usuario = ".$id_usuario." AND c.pagamento=0 ORDER BY pc.id_produto ASC";
         $result = mysqli_query($conexao, $query);
 
         $total = 0;
-        $total_geral = 0;
         if($result):
           if(mysqli_num_rows($result)>0):
             while($produtos = mysqli_fetch_assoc($result)):
@@ -140,18 +139,16 @@ if(!empty($resultado)){
                 </button>
               </div>
               <div class="text-right mt-2">
-                <small class="text-secondary">Valor un: R$ <?php echo $produtos['preco']; ?></small><br>
+                <small class="text-secondary">Valor un: R$ <?php echo $produtos['un']; ?></small><br>
                 <?php 
-                  $preco_un = $produtos['preco'];
-                  $quantidade = $produtos['quantidade'];
-                  $total = $preco_un * $quantidade;
-                  $total_geral = $total_geral + $total;
+                  
                 ?>
-                <span class="text-dark">Valor itens: R$ <?php echo $total; ?></span>
+                <span class="text-dark">Valor itens: R$ <?php echo $produtos['valor_c']; ?></span>
               </div>
             </div>
         </li>
         <?php
+                $total = $produtos['total'];
                 endwhile;
             endif;
         endif;
@@ -159,7 +156,7 @@ if(!empty($resultado)){
         <!-- Botões para fechar a comanda -->
         <li class="list-group-item py-3">
           <div class="text-right">
-            <h4 class="text-dark mb-3">Valor Total: R$ <?php echo $total_geral; ?></h4>
+            <h4 class="text-dark mb-3">Valor Total: R$ <?php echo $total; ?></h4>
             <a href="http://localhost/joaogarcom/login/cardapio.php?id='<?php echo $id_estabelecimento; ?>'" class="btn btn-outline-success btn-lg"> Continuar Pedindo </a>
             <a href="Comanda.php" class="btn btn-danger btn-lg">Confirmar Pedido</a>
           </div>

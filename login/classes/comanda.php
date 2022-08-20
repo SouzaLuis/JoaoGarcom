@@ -28,16 +28,66 @@ Class Comanda{
         return true;
     }
 
-    public function carregar_comanda($quantidade, $valor, $id_comanda, $id_produto)
+    public function verifica_comanda($quantidade, $valor, $id_comanda, $id_produto)
     {
         global $pdo;
-        $sql = $pdo->prepare("INSERT INTO produto_comanda (quantidade, valor, id_comanda, id_produto) VALUES (:q, :p, :id_com, :id_prod)");
-        $sql->bindValue(":q",$quantidade);
-        $sql->bindValue(":p",$valor);     
+        $qtd = 0;
+        $valor_total = 0;
+        $valor_comanda = 0;
+        $valor_total_comanda = 0;
+
+        $comanda = $pdo->prepare("SELECT valor FROM comanda WHERE id = :id");
+        $comanda->bindValue(":id",$id_comanda);
+        $comanda->execute();
+        $comanda_list = $comanda->fetch(PDO::FETCH_ASSOC);
+        $valor_comanda = $comanda_list['valor'];
+
+        $sql = $pdo->prepare("SELECT quantidade, valor, id_produto FROM produto_comanda WHERE id_comanda = :id_com AND id_produto = :id_prod"); 
         $sql->bindValue(":id_com",$id_comanda);
         $sql->bindValue(":id_prod",$id_produto);
         $sql->execute();
-        return true;
+        if($sql->rowCount()>0){
+            $produtos = $sql->fetch(PDO::FETCH_ASSOC);
+
+            $qtd = $qtd + $produtos['quantidade'];
+            $valor_total = $valor * $qtd;
+            
+            $valor_total_comanda = $valor_comanda + $valor_total;
+
+
+            $atualiza_comanda = $pdo->prepare("UPDATE comanda SET valor = :v WHERE id = :id_com");
+            $atualiza_comanda->bindValue(":v",$valor_total_comanda);
+            $atualiza_comanda->bindValue(":id_com",$id_comanda);
+            $atualiza_comanda->execute();
+
+            $atualiza = $pdo->prepare("UPDATE produto_comanda SET quantidade = :q , valor = :p WHERE id_comanda = :id_com AND id_produto = :id_prod");
+            $atualiza->bindValue(":q",$qtd);
+            $atualiza->bindValue(":p",$valor_total);
+            $atualiza->bindValue(":id_com",$id_comanda);
+            $atualiza->bindValue(":id_prod",$id_produto);
+            $atualiza->execute();
+            return true;
+        } else{
+
+            $produtos = $sql->fetch(PDO::FETCH_ASSOC);
+
+            $valor_total = $valor * $quantidade;
+
+            $valor_total_comanda = $valor_comanda + $valor_total;
+            
+            $atualiza_comanda = $pdo->prepare("UPDATE comanda SET valor = :v WHERE id = :id_com");
+            $atualiza_comanda->bindValue(":v",$valor_total_comanda);
+            $atualiza_comanda->bindValue(":id_com",$id_comanda);
+            $atualiza_comanda->execute();
+
+            $insere = $pdo->prepare("INSERT INTO produto_comanda (quantidade, valor, id_comanda, id_produto) VALUES (:q, :p, :id_com, :id_prod)");
+            $insere->bindValue(":q",$quantidade);
+            $insere->bindValue(":p",$valor_total);     
+            $insere->bindValue(":id_com",$id_comanda);
+            $insere->bindValue(":id_prod",$id_produto);
+            $insere->execute();
+            return true;
+        }
     }
 
     public function gerar_comanda($id_usuario, $id_estabelecimento)
@@ -67,14 +117,7 @@ Class Comanda{
         $sql->execute();
         return true;
     }
-    public function verifica_mesa($id_usuario, $id_estabelecimento){
-        global $pdo;
-        $sql = $pdo->prepare("SELECT numero_mesa FROM comanda WHERE id_usuario = :id_user AND id_estabelecimento = :id_est AND pagamento = 0"); 
-        $sql->bindValue(":id_user",$id_usuario);
-        $sql->bindValue(":id_est",$id_estabelecimento);
-        $sql->execute();
-        return true;
-    }
+    
 }
 
 ?>

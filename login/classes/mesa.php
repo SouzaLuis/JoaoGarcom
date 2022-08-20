@@ -46,5 +46,16 @@ Class Mesa
         $sql->execute();
         return true;
     }
+
+    public function fechar_mesa($id_comanda, $id_estabelecimento, $id_usuario)
+    {
+        global $pdo;
+        $sql = $pdo->prepare("UPDATE comanda SET pagamento = 1 WHERE id = :id AND id_estabelecimento = :id_estabelecimento AND id_usuario = :id_usuario");
+        $sql->bindValue(":id",$id_comanda);
+        $sql->bindValue(":id_estabelecimento",$id_estabelecimento);
+        $sql->bindValue(":id_usuario",$id_usuario);
+        $sql->execute();
+        return true;
+    }
 }
 ?>

@@ -94,18 +94,18 @@ $c = new Comanda;
         ?>
         <?php
         //verificar se clicou no botão
+        
         if(isset($_POST['id'])){
             $quantidade = addslashes($_POST['quantidade']);
             $valor = addslashes($_POST['preco']);
             $id_produto = addslashes($_POST['id']);
-
+            
             //verificar se está vazio
             if(!empty($id_comanda) && !empty($id_produto)){
+                
                 $c->conectar("jglogin","localhost","root","");
                 if($c->msgErro == ""){
-                    if($c->carregar_comanda($quantidade, $valor, $id_comanda, $id_produto))
-                    {
-                    }            
+                    if($c->verifica_comanda($quantidade, $valor, $id_comanda, $id_produto)){}           
                 }else{
                 }
             }else{
