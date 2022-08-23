@@ -24,6 +24,17 @@ if(!empty($resultado)){
     $numero_mesa = $mesas['numero_mesa'];
   }
 }
+
+if(isset($_POST['diminuir'])){
+  header("Refresh:0");
+}
+if(isset($_POST['aumentar'])){
+  header("Refresh:0");
+}
+if(isset($_POST['deletar'])){
+  header("Refresh:0");
+}
+
 ?>
 
 
@@ -155,14 +166,33 @@ if(!empty($resultado)){
 
           //verificar se está vazio
           if(!empty($id)){
-            echo "Passou vazio";
             $c->conectar("jglogin","localhost","root","");
             if($c->msgErro == ""){
-              echo "Passou sem msg";
-              if($c->diminui_produto_comanda($id)){
-                echo "Passou função";
-                // header("Refresh:0");
-              }            
+              if($c->diminui_produto_comanda($id)){}            
+            }
+          }
+        }
+        if(isset($_POST['aumentar'])){
+
+          $id = addslashes($_POST['id_comanda']);
+
+          //verificar se está vazio
+          if(!empty($id)){
+            $c->conectar("jglogin","localhost","root","");
+            if($c->msgErro == ""){
+              if($c->aumenta_produto_comanda($id)){}            
+            }
+          }
+        }
+        if(isset($_POST['deletar'])){
+
+          $id = addslashes($_POST['id_comanda']);
+
+          //verificar se está vazio
+          if(!empty($id)){
+            $c->conectar("jglogin","localhost","root","");
+            if($c->msgErro == ""){
+              if($c->deleta_produto_comanda($id)){}            
             }
           }
         }

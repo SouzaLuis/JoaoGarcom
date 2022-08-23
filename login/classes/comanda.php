@@ -123,24 +123,117 @@ Class Comanda{
         $valor = 0;
         $unidade = 0;
         global $pdo;
-        $sql = $pdo->prepare("SELECT pc.quantidade, pc.valor, p.preco FROM produto_comanda pc INNER JOIN produtos p ON p.id = pc.id_produto WHERE pc.id = :id");
+        $sql = $pdo->prepare("SELECT pc.quantidade, pc.valor, pc.id_comanda, p.preco FROM produto_comanda pc INNER JOIN produtos p ON p.id = pc.id_produto WHERE pc.id = :id");
         $sql->bindValue(":id",$id);
         $sql->execute();
         if($sql->rowCount()>0){
             $comanda = $sql->fetch(PDO::FETCH_ASSOC);
-            $quantidade = $comanda['quantidade'] - 1;
+            $quantidade = $comanda['quantidade'];  
+            $qtd = $quantidade - 1;
             $unidade = $comanda['preco'];
             $valor = $comanda['valor'] - $unidade;
+            $id_comanda = $comanda['id_comanda'];
 
-            $atualiza = $pdo->prepare("UPDATE produto_comanda SET quantidade = :q AND valor = :v WHERE id = :id");
-            $atualiza->bindValue(":q",$quantidade);
+            $atualiza = $pdo->prepare("UPDATE produto_comanda SET quantidade = :q, valor = :v WHERE id = :id");
+            $atualiza->bindValue(":q",$qtd);
             $atualiza->bindValue(":v",$valor);
             $atualiza->bindValue(":id",$id);
             $atualiza->execute();
-            echo "Passou 1";
+
+            $comanda_geral = $pdo->prepare('SELECT valor FROM comanda WHERE id = :id');
+            $comanda_geral->bindValue("id",$id_comanda);
+            $comanda_geral->execute();
+            $comanda_mesa = $comanda_geral->fetch(PDO::FETCH_ASSOC);
+
+            $valor_total = $comanda_mesa['valor'] - $unidade;
+
+            $atualiza_comanda = $pdo->prepare("UPDATE comanda SET valor = :v WHERE id = :id");
+            $atualiza_comanda->bindValue("v",$valor_total);
+            $atualiza_comanda->bindValue("id",$id_comanda);
+            $atualiza_comanda->execute();
+
+            if($qtd == 0){
+                $deleta = $pdo->prepare("DELETE FROM produto_comanda WHERE id = :id");
+                $deleta->bindValue("id",$id);
+                $deleta->execute();
+            }
+
             return true;
         } else{
-            echo "Passou 2";
+            return false;
+        }
+    }
+
+    public function aumenta_produto_comanda($id){
+        $quantidade = 0;
+        $valor = 0;
+        $unidade = 0;
+        global $pdo;
+        $sql = $pdo->prepare("SELECT pc.quantidade, pc.valor, pc.id_comanda, p.preco FROM produto_comanda pc INNER JOIN produtos p ON p.id = pc.id_produto WHERE pc.id = :id");
+        $sql->bindValue(":id",$id);
+        $sql->execute();
+        if($sql->rowCount()>0){
+            $comanda = $sql->fetch(PDO::FETCH_ASSOC);
+            $quantidade = $comanda['quantidade'];  
+            $qtd = $quantidade + 1;
+            $unidade = $comanda['preco'];
+            $valor = $comanda['valor'] + $unidade;
+            $id_comanda = $comanda['id_comanda'];
+
+            $atualiza = $pdo->prepare("UPDATE produto_comanda SET quantidade = :q, valor = :v WHERE id = :id");
+            $atualiza->bindValue(":q",$qtd);
+            $atualiza->bindValue(":v",$valor);
+            $atualiza->bindValue(":id",$id);
+            $atualiza->execute();
+            
+            $comanda_geral = $pdo->prepare('SELECT valor FROM comanda WHERE id = :id');
+            $comanda_geral->bindValue("id",$id_comanda);
+            $comanda_geral->execute();
+            $comanda_mesa = $comanda_geral->fetch(PDO::FETCH_ASSOC);
+
+            $valor_total = $comanda_mesa['valor'] + $unidade;
+
+            $atualiza_comanda = $pdo->prepare("UPDATE comanda SET valor = :v WHERE id = :id");
+            $atualiza_comanda->bindValue("v",$valor_total);
+            $atualiza_comanda->bindValue("id",$id_comanda);
+            $atualiza_comanda->execute();
+
+            return true;
+        } else{
+            return false;
+        }
+    }
+
+    public function deleta_produto_comanda($id){
+        $quantidade = 0;
+        $valor = 0;
+        $unidade = 0;
+        global $pdo;
+        $sql = $pdo->prepare("SELECT pc.quantidade, pc.valor, pc.id_comanda, p.preco FROM produto_comanda pc INNER JOIN produtos p ON p.id = pc.id_produto WHERE pc.id = :id");
+        $sql->bindValue(":id",$id);
+        $sql->execute();
+        if($sql->rowCount()>0){
+            $comanda = $sql->fetch(PDO::FETCH_ASSOC);
+            $valor = $comanda['valor'];
+            $id_comanda = $comanda['id_comanda'];
+
+            $comanda_geral = $pdo->prepare('SELECT valor FROM comanda WHERE id = :id');
+            $comanda_geral->bindValue("id",$id_comanda);
+            $comanda_geral->execute();
+            $comanda_mesa = $comanda_geral->fetch(PDO::FETCH_ASSOC);
+
+            $valor_total = $comanda_mesa['valor'] - $valor;
+
+            $atualiza_comanda = $pdo->prepare("UPDATE comanda SET valor = :v WHERE id = :id");
+            $atualiza_comanda->bindValue("v",$valor_total);
+            $atualiza_comanda->bindValue("id",$id_comanda);
+            $atualiza_comanda->execute();
+
+            $deleta = $pdo->prepare("DELETE FROM produto_comanda WHERE id = :id");
+            $deleta->bindValue("id",$id);
+            $deleta->execute();
+            return true;
+        } else{
             return false;
         }
     }
