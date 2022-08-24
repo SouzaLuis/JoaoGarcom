@@ -57,5 +57,22 @@ Class Mesa
         $sql->execute();
         return true;
     }
+
+    public function detalhar_comanda($id_comanda)
+    {
+        global $pdo;
+        $sql = $pdo->prepare("SELECT pc.id_comanda FROM produto_comanda pc WHERE pc.id_comanda = :id");
+        $sql->bindValue(":id",$id_comanda);
+        $sql->execute();
+        if($sql->rowCount()>0){ //entrar no sistema
+            $dado = $sql->fetch();
+            session_start();
+            $_SESSION['id_comanda'] = $dado['id_comanda'];
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
 ?>

@@ -6,8 +6,11 @@
         exit;
     }
     $id_estabelecimento = $_SESSION['id'];
-    if(isset($_POST['id_comanda'])){
-        header("Refresh:0");
+    if(isset($_POST['pago'])){
+        // header("Refresh:0");
+    }
+    if(isset($_POST['detalhar'])){
+        header("location: revisaoMesa.php");
     }
     require_once 'classes/mesa.php';
     $u = new Mesa;
@@ -34,7 +37,7 @@
                 <a class="nav-link" style="background-color: rgb(160,4,4);color:white;" href="cadastroProdutos.php">Alterar Cardápio</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link disabled" style="background-color: rgb(160,4,4);" href="">Acompanhar Relatório Financeiro</a>
+                <a class="nav-link disabled" style="background-color: rgb(160,4,4);" href="">Pedidos</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" style="float:right background-color: rgb(160,4,4);color:white; text-decoration:none" href="sair.php">Sair</a>
@@ -108,11 +111,12 @@
     <div class="container-fluid">
         <div class="row">
             <?php
-                $query_comanda = 'SELECT c.id, c.id_usuario, c.id_estabelecimento, c.numero_mesa, c.valor, u.nome FROM comanda c INNER JOIN usuario u ON u.id = c.id_usuario WHERE c.id_estabelecimento = '.$id_estabelecimento.' AND c.pagamento = 0';
+                $query_comanda = 'SELECT c.id, c.id_usuario, c.id_estabelecimento, c.numero_mesa, c.valor, u.nome FROM comanda c INNER JOIN usuario u ON u.id = c.id_usuario WHERE c.id_estabelecimento = '.$id_estabelecimento.' AND c.pagamento = 0 ORDER BY c.id DESC';
                 $result_comanda = mysqli_query($conexao, $query_comanda);
                 if($result_comanda):
                     if(mysqli_num_rows($result_comanda)>0):
                         while($comanda = mysqli_fetch_assoc($result_comanda)):
+                            $id_usuario = $comanda['id_usuario'];
                             ?>
                                 <div class="col-sm-12 col-md-12">
                                     <div class="card-group">
@@ -124,7 +128,7 @@
                                                     <h4 class="card-tittle" style="float: center;"><b>Status:</b> Em aberto</h4>
                                                     <br><br>
                                                     <h4 class="card-tittle" style="float: left;"><b>Valor Total:</b> R$ <?php echo $comanda['valor']; ?></h4>
-                                                    <button style="background-color: rgb(160,4,4); width:150px; float: right; margin-right: 10px;" type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target=".bd-example-modal-lg">Detalhes</button>
+                                                    <button style="background-color: rgb(160,4,4); width:150px; float: right; margin-right: 10px;" type="submit" id="detalhar" name="detalhar" class="btn btn-danger btn-lg" data-toggle="modal" data-target=".bd-example-modal-lg">Detalhes</button>
                                                     <input type="hidden" name="id_comanda" value="<?php echo $comanda['id']; ?>">
                                                     <input type="hidden" name="id_estabelecimento" value="<?php echo $comanda['id_estabelecimento']; ?>">
                                                     <input type="hidden" name="id_usuario" value="<?php echo $comanda['id_usuario']; ?>">
@@ -134,26 +138,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header" style="background-color: rgb(160,4,4); color: #FFFFFF">
-                                            <h5 class="modal-title" id="exampleModalLabel">Detalhes Comanda - <?php echo $comanda['nome']; ?></h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                                            <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                            <div class="modal-body">
-                                                <div class="form-group"><h4>Teste</h4></div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                                            </div>
-                                    </div>
-                                </div>
-                            </div>
                             <?php
-                                if(isset($_POST['id_comanda'])){
+                                if(isset($_POST['pago'])){
                                     $id_comanda = addslashes($_POST['id_comanda']);
                                     $id_estabelecimento = addslashes($_POST['id_estabelecimento']);
                                     $id_usuario = addslashes($_POST['id_usuario']);
@@ -162,6 +148,17 @@
                                         $u->conectar("jglogin","localhost","root","");
                                         if($u->msgErro == ""){
                                             if($u->fechar_mesa($id_comanda, $id_estabelecimento, $id_usuario)){}
+                                        }
+                                    }
+                                }
+                                if(isset($_POST['detalhar'])){
+                                    $id_comanda = addslashes($_POST['id_comanda']);
+                                    
+                                    if(!empty($id_comanda)){
+                                        $u->conectar("jglogin","localhost","root","");
+                                        if($u->msgErro == ""){
+                                            if($u->detalhar_comanda($id_comanda)){
+                                            }
                                         }
                                     }
                                 }
