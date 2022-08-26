@@ -255,6 +255,17 @@ Class Comanda{
         $sql->execute();
         return true;
     }
+
+    public function pagar_comanda($id_comanda)
+    {
+        $garcom = 1;
+        global $pdo;
+        $sql = $pdo->prepare("UPDATE comanda SET aguardando_garcom = :g WHERE id = :id");
+        $sql->bindValue(":g",$garcom);
+        $sql->bindValue(":id",$id_comanda);
+        $sql->execute();
+        return true;
+    }
 }
 
 ?>

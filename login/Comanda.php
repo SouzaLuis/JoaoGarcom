@@ -11,6 +11,9 @@ if (!isset($_SESSION['id_comanda'])) {
 $id_usuario = $_SESSION['id'];
 $id_comanda = $_SESSION['id_comanda'];
 
+require_once 'classes/comanda.php';
+$c = new Comanda;
+
 if(isset($_POST['pagamento'])){
     header("location: pagamento.php");
   }
@@ -123,10 +126,9 @@ if(isset($_POST['pagamento'])){
             </form>
             <?php
               if(isset($_POST['pagamento'])){                
-                $garcom = 1;
                 $c->conectar("jglogin","localhost","root","");
                 if($c->msgErro == ""){
-                  if($c->pagar_comanda($garcom, $id_comanda)){}            
+                  if($c->pagar_comanda($id_comanda)){}            
                 }
               }
             ?>
