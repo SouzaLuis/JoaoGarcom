@@ -7,10 +7,13 @@
     }
     $id_estabelecimento = $_SESSION['id'];
     if(isset($_POST['pago'])){
-        // header("Refresh:0");
+        header("Refresh:0");
     }
     if(isset($_POST['detalhar'])){
         header("location: revisaoMesa.php");
+    }
+    if(isset($_POST['entregue'])){
+        header("Refresh:0");
     }
     require_once 'classes/mesa.php';
     $u = new Mesa;
@@ -37,7 +40,7 @@
                 <a class="nav-link" style="background-color: rgb(160,4,4);color:white;" href="cadastroProdutos.php">Alterar Cardápio</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link disabled" style="background-color: rgb(160,4,4);" href="">Pedidos</a>
+                <a class="nav-link disabled" style="background-color: rgb(160,4,4);" href="pedidosEstabelecimento.php">Acompanha Relatório Financeiro</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" style="float:right background-color: rgb(160,4,4);color:white; text-decoration:none" href="sair.php">Sair</a>
@@ -111,27 +114,44 @@
     <div class="container-fluid">
         <div class="row">
             <?php
-                $query_comanda = 'SELECT c.id, c.id_usuario, c.id_estabelecimento, c.numero_mesa, c.valor, u.nome FROM comanda c INNER JOIN usuario u ON u.id = c.id_usuario WHERE c.id_estabelecimento = '.$id_estabelecimento.' AND c.pagamento = 0 ORDER BY c.id DESC';
+                $query_comanda = 'SELECT c.id, c.id_usuario, c.id_estabelecimento, c.numero_mesa, c.valor, c.aguardando_garcom, c.entregue, c.pedido_confirmado, u.nome FROM comanda c INNER JOIN usuario u ON u.id = c.id_usuario WHERE c.id_estabelecimento = '.$id_estabelecimento.' AND c.pagamento = 0 ORDER BY c.id DESC';
                 $result_comanda = mysqli_query($conexao, $query_comanda);
                 if($result_comanda):
                     if(mysqli_num_rows($result_comanda)>0):
                         while($comanda = mysqli_fetch_assoc($result_comanda)):
                             $id_usuario = $comanda['id_usuario'];
+                            $garcom = $comanda['aguardando_garcom'];
+                            $entregue = $comanda['entregue'];
+                            $pedido = $comanda['pedido_confirmado'];
+                            if($garcom == 1 && $entregue == 1){
+                                $color = "ffb7b7";
+                                $status = "Aguardando garçom ir até a mesa";
+                            } else if($garcom == 0 && $entregue == 0 && $pedido == 1){
+                                $color = "f8fc98";
+                                $status = "Aguardando o pedido ser levado até a mesa";
+                            } else if($garcom == 0 && $entregue == 1){
+                                $color = "cafc98";
+                                $status = "Aguardando o pagamento";
+                            } else{
+                                $color = "ffffff";
+                                $status = "Cliente ainda está escolhendo";
+                            }
                             ?>
                                 <div class="col-sm-12 col-md-12">
                                     <div class="card-group">
                                         <div class="card text-center">
-                                            <div class="card-body">
+                                            <div class="card-body" style="background-color: #<?=$color?>">
                                                 <form method="POST">
                                                     <h4 class="card-tittle" style="float: left;"><b>N° Mesa:</b> <?php echo $comanda['numero_mesa']; ?></h4>
                                                     <h4 class="card-tittle" style="float: right;"><b>Cliente:</b> <?php echo $comanda['nome']; ?></h4>
-                                                    <h4 class="card-tittle" style="float: center;"><b>Status:</b> Em aberto</h4>
+                                                    <h4 class="card-tittle" style="float: center;"><b>Status:</b> <?=$status?></h4>
                                                     <br><br>
                                                     <h4 class="card-tittle" style="float: left;"><b>Valor Total:</b> R$ <?php echo $comanda['valor']; ?></h4>
                                                     <button style="background-color: rgb(160,4,4); width:150px; float: right; margin-right: 10px;" type="submit" id="detalhar" name="detalhar" class="btn btn-danger btn-lg" data-toggle="modal" data-target=".bd-example-modal-lg">Detalhes</button>
                                                     <input type="hidden" name="id_comanda" value="<?php echo $comanda['id']; ?>">
                                                     <input type="hidden" name="id_estabelecimento" value="<?php echo $comanda['id_estabelecimento']; ?>">
                                                     <input type="hidden" name="id_usuario" value="<?php echo $comanda['id_usuario']; ?>">
+                                                    <input type="submit" id="entregue" name="entregue" class="btn btn-success btn-lg" value="Entregue" style="float: right; width: 150px; margin-right: 10px;">
                                                     <input type="submit" id="pago" name="pago" class="btn btn-success btn-lg" value="Pago" style="float: right; width: 150px; margin-right: 10px;">
                                                 </form>
                                             </div>
@@ -158,6 +178,17 @@
                                         $u->conectar("jglogin","localhost","root","");
                                         if($u->msgErro == ""){
                                             if($u->detalhar_comanda($id_comanda)){
+                                            }
+                                        }
+                                    }
+                                }
+                                if(isset($_POST['entregue'])){
+                                    $id_comanda = addslashes($_POST['id_comanda']);
+                                    
+                                    if(!empty($id_comanda)){
+                                        $u->conectar("jglogin","localhost","root","");
+                                        if($u->msgErro == ""){
+                                            if($u->pedido_entregue($id_comanda)){
                                             }
                                         }
                                     }

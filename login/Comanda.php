@@ -8,9 +8,12 @@ if (!isset($_SESSION['id_comanda'])) {
   header("location: inicio.php");
   exit;
 }
-
 $id_usuario = $_SESSION['id'];
 $id_comanda = $_SESSION['id_comanda'];
+
+if(isset($_POST['pagamento'])){
+    header("location: pagamento.php");
+  }
 ?>
 
 
@@ -113,10 +116,21 @@ $id_comanda = $_SESSION['id_comanda'];
         ?> 
         <!-- Botões para fechar a comanda -->
         <li class="list-group-item py-3">
-            <div class="text-right">
-                <h4 class="text-dark mb-3">Valor Total: R$ <?php echo $total_geral; ?></h4>
-                <a href="pagamento.php" class="btn btn-danger btn-lg"> Pagar Comanda </a>
-            </div>
+          <div class="text-right">
+            <form method="post">
+              <h4 class="text-dark mb-3">Valor Total: R$ <?php echo $total_geral; ?></h4>
+              <button class="btn btn-danger btn-lg" type="submit" name="pagamento">Pagar Comanda</button>
+            </form>
+            <?php
+              if(isset($_POST['pagamento'])){                
+                $garcom = 1;
+                $c->conectar("jglogin","localhost","root","");
+                if($c->msgErro == ""){
+                  if($c->pagar_comanda($garcom, $id_comanda)){}            
+                }
+              }
+            ?>
+          </div>
         </li>
                     </br>
                     </br>

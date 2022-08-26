@@ -74,5 +74,15 @@ Class Mesa
             return false;
         }
     }
+
+    public function pedido_entregue($id_comanda)
+    {
+        global $pdo;
+        $sql = $pdo->prepare("UPDATE comanda SET entregue = 1 WHERE id = :id");
+        $sql->bindValue(":id",$id_comanda);
+        $sql->execute();
+        return true;
+    }
 }
 ?>
+

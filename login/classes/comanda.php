@@ -17,13 +17,17 @@ Class Comanda{
         }
     }
 
-    public function abrir_comanda($valor,$id_estabelecimento, $id_usuario, $pagamento){
+    public function abrir_comanda($valor,$id_estabelecimento, $id_usuario, $pagamento, $entregue, $garcom, $produto){
+        $pedido = 0;
         global $pdo;   
-        $sql = $pdo->prepare("INSERT INTO comanda (valor, data_comanda, id_estabelecimento, id_usuario, pagamento) VALUES (:v, NOW(), :id_est, :id_user, :p)");
+        $sql = $pdo->prepare("INSERT INTO comanda (valor, data_comanda, id_estabelecimento, id_usuario, pagamento, entregue, aguardando_garcom, pedido_confirmado) VALUES (:v, NOW(), :id_est, :id_user, :p, :e, :g, :p)");
         $sql->bindValue(":v",$valor);
         $sql->bindValue(":id_est",$id_estabelecimento);
         $sql->bindValue(":id_user",$id_usuario);
         $sql->bindValue(":p",$pagamento);
+        $sql->bindValue(":e",$entregue);
+        $sql->bindValue(":g",$garcom);
+        $sql->bindValue(":p",$pedido);
         $sql->execute();
         return true;
     }
@@ -109,7 +113,8 @@ Class Comanda{
         }
     }
 
-    public function atualiza_mesa($mesa, $id_comanda_mesa){
+    public function atualiza_mesa($mesa, $id_comanda_mesa)
+    {
         global $pdo;
         $sql = $pdo->prepare("UPDATE comanda SET numero_mesa = :n WHERE id = :id"); 
         $sql->bindValue(":n",$mesa);
@@ -118,7 +123,8 @@ Class Comanda{
         return true;
     }
     
-    public function diminui_produto_comanda($id){
+    public function diminui_produto_comanda($id)
+    {
         $quantidade = 0;
         $valor = 0;
         $unidade = 0;
@@ -164,7 +170,8 @@ Class Comanda{
         }
     }
 
-    public function aumenta_produto_comanda($id){
+    public function aumenta_produto_comanda($id)
+    {
         $quantidade = 0;
         $valor = 0;
         $unidade = 0;
@@ -204,7 +211,8 @@ Class Comanda{
         }
     }
 
-    public function deleta_produto_comanda($id){
+    public function deleta_produto_comanda($id)
+    {
         $quantidade = 0;
         $valor = 0;
         $unidade = 0;
@@ -236,6 +244,16 @@ Class Comanda{
         } else{
             return false;
         }
+    }
+
+    public function confirma_pedido($confirma, $id_comanda)
+    {
+        global $pdo;
+        $sql = $pdo->prepare("UPDATE comanda SET pedido_confirmado = :c WHERE id = :id");
+        $sql->bindValue(":c",$confirma);
+        $sql->bindValue(":id",$id_comanda);
+        $sql->execute();
+        return true;
     }
 }
 

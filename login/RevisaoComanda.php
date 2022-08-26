@@ -8,6 +8,9 @@ if (!isset($_SESSION['id_comanda'])) {
   header("location: inicio.php");
   exit;
 }
+if(isset($_POST['confirma'])){
+  header("location: Comanda.php");
+}
 
 $id_usuario = $_SESSION['id'];
 $id_comanda = $_SESSION['id_comanda'];
@@ -33,6 +36,9 @@ if(isset($_POST['aumentar'])){
 }
 if(isset($_POST['deletar'])){
   header("Refresh:0");
+}
+if(isset($_POST['detalhar'])){
+  header("location: revisaoMesa.php");
 }
 
 ?>
@@ -200,9 +206,20 @@ if(isset($_POST['deletar'])){
         <!-- Botões para fechar a comanda -->
         <li class="list-group-item py-3">
           <div class="text-right">
-            <h4 class="text-dark mb-3">Valor Total: R$ <?php echo $total; ?></h4>
-            <a href="http://localhost/joaogarcom/login/cardapio.php?id='<?php echo $id_estabelecimento; ?>'" class="btn btn-outline-success btn-lg"> Continuar Pedindo </a>
-            <a href="Comanda.php" class="btn btn-danger btn-lg">Confirmar Pedido</a>
+            <form method="post">
+              <h4 class="text-dark mb-3">Valor Total: R$ <?php echo $total; ?></h4>
+              <a href="http://localhost/joaogarcom/login/cardapio.php?id='<?php echo $id_estabelecimento; ?>'" class="btn btn-outline-success btn-lg"> Continuar Pedindo </a>
+              <button class="btn btn-danger btn-lg" type="submit" name="confirma">Confirmar Pedido</button>
+            </form>
+            <?php
+              if(isset($_POST['confirma'])){                
+                $confirma = 1;
+                $c->conectar("jglogin","localhost","root","");
+                if($c->msgErro == ""){
+                  if($c->confirma_pedido($confirma, $id_comanda)){}            
+                }
+              }
+            ?>
           </div>
         </li>
     </div>
