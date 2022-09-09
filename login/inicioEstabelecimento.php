@@ -12,9 +12,6 @@
     if(isset($_POST['detalhar'])){
         header("location: revisaoMesa.php");
     }
-    if(isset($_POST['entregue'])){
-        header("Refresh:0");
-    }
     require_once 'classes/mesa.php';
     $u = new Mesa;
 ?>
@@ -114,26 +111,38 @@
     <div class="container-fluid">
         <div class="row">
             <?php
-                $query_comanda = 'SELECT c.id, c.id_usuario, c.id_estabelecimento, c.numero_mesa, c.valor, c.aguardando_garcom, c.entregue, c.pedido_confirmado, u.nome FROM comanda c INNER JOIN usuario u ON u.id = c.id_usuario WHERE c.id_estabelecimento = '.$id_estabelecimento.' AND c.pagamento = 0 ORDER BY c.id DESC';
+                $query_comanda = 'SELECT c.id, c.id_usuario, c.id_estabelecimento, c.numero_mesa, c.valor, c.aguardando_garcom, c.pedido_confirmado, c.forma_pagamento, u.nome FROM comanda c INNER JOIN usuario u ON u.id = c.id_usuario WHERE c.id_estabelecimento = '.$id_estabelecimento.' AND c.pagamento = 0 ORDER BY c.id DESC';
                 $result_comanda = mysqli_query($conexao, $query_comanda);
                 if($result_comanda):
                     if(mysqli_num_rows($result_comanda)>0):
                         while($comanda = mysqli_fetch_assoc($result_comanda)):
                             $id_usuario = $comanda['id_usuario'];
                             $garcom = $comanda['aguardando_garcom'];
-                            $entregue = $comanda['entregue'];
                             $pedido = $comanda['pedido_confirmado'];
-                            if($garcom == 1 && $entregue == 1){
-                                $color = "ffb7b7";
-                                $status = "Aguardando garçom ir até a mesa";
-                            } else if($garcom == 0 && $entregue == 0 && $pedido == 1){
+                            $pagamento = $comanda['forma_pagamento'];
+                            if($garcom == 1 && $pagamento == 1){
+                                $color = "d7ff96";
+                                //verde claro
+                                $status = "Cliente irá pagar no cartão, leve a máquininha";
+                            } else if($garcom == 1 && $pagamento == 2){
+                                $color = "d7ff96";
+                                //verde claro
+                                $status = "Cliente irá pagar no dinheiro";
+                            } else if($garcom == 1 && $pagamento == 3){
+                                $color = "d7ff96";
+                                //verde claro
+                                $status = "Cliente irá pagar no PIX";
+                            } else if($garcom == 1 && $pedido == 1){
+                                $color = "fff85a";
+                                //amarelo mais escuro
+                                $status = "Cliente está prestes a finalizar";
+                            } else if($pedido == 1){
                                 $color = "f8fc98";
-                                $status = "Aguardando o pedido ser levado até a mesa";
-                            } else if($garcom == 0 && $entregue == 1){
-                                $color = "cafc98";
-                                $status = "Aguardando o pagamento";
+                                //amarelo claro
+                                $status = "Cliente está consumindo";
                             } else{
-                                $color = "ffffff";
+                                $color = "eeeeee";
+                                //transparente
                                 $status = "Cliente ainda está escolhendo";
                             }
                             ?>
@@ -151,7 +160,6 @@
                                                     <input type="hidden" name="id_comanda" value="<?php echo $comanda['id']; ?>">
                                                     <input type="hidden" name="id_estabelecimento" value="<?php echo $comanda['id_estabelecimento']; ?>">
                                                     <input type="hidden" name="id_usuario" value="<?php echo $comanda['id_usuario']; ?>">
-                                                    <input type="submit" id="entregue" name="entregue" class="btn btn-success btn-lg" value="Entregue" style="float: right; width: 150px; margin-right: 10px;">
                                                     <input type="submit" id="pago" name="pago" class="btn btn-success btn-lg" value="Pago" style="float: right; width: 150px; margin-right: 10px;">
                                                 </form>
                                             </div>
@@ -178,17 +186,6 @@
                                         $u->conectar("jglogin","localhost","root","");
                                         if($u->msgErro == ""){
                                             if($u->detalhar_comanda($id_comanda)){
-                                            }
-                                        }
-                                    }
-                                }
-                                if(isset($_POST['entregue'])){
-                                    $id_comanda = addslashes($_POST['id_comanda']);
-                                    
-                                    if(!empty($id_comanda)){
-                                        $u->conectar("jglogin","localhost","root","");
-                                        if($u->msgErro == ""){
-                                            if($u->pedido_entregue($id_comanda)){
                                             }
                                         }
                                     }

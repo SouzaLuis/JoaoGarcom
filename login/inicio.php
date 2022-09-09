@@ -114,15 +114,16 @@
       $id_estabelecimento = addslashes($_POST['estabelecimentos']);
       $id_usuario = addslashes($_POST['id_usuario']);
       $pagamento = 0;
-      $entregue = 0;
       $garcom = 0;
+      $doacao = 0;
+      $forma_pgto = 0;
       $produto = 0;
 
         //verificar se está vazio
         if(!empty($id_estabelecimento) && !empty($id_usuario)){
             $c->conectar("jglogin","localhost","root","");
             if($c->msgErro == ""){
-                if($c->abrir_comanda($valor,$id_estabelecimento, $id_usuario, $pagamento, $entregue, $garcom, $produto))
+                if($c->abrir_comanda($valor,$id_estabelecimento, $id_usuario, $pagamento, $garcom, $doacao, $forma_pgto, $produto))
                 {
                     if($c->gerar_comanda($id_usuario, $id_estabelecimento)){}
                 }            
@@ -149,8 +150,7 @@
           }
         );
         scanner.addListener('scan', function(content) {
-          // alert('Escaneou o conteudo: ' + content);
-          //window.open(content, "_blank");
+          windows.open("cardapio.php?id="+content,"blank");
         });
         Instascan.Camera.getCameras().then(cameras => 
           {

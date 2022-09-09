@@ -12,6 +12,9 @@
     $id_estabelecimento = $_SESSION['id'];
     $id_comanda = $_SESSION['id_comanda'];
 
+    if(isset($_POST['entregue'])){
+        header("Refresh:0");
+    }
     require_once 'classes/mesa.php';
     $u = new Mesa;
 ?>
@@ -39,49 +42,77 @@
             <div class="container">
                 <?php
                     $conexao = mysqli_connect('localhost', 'root', '','jglogin');
-                    $query = "SELECT pc.quantidade, pc.valor total, c.valor, p.nome, p.descricao, p.imagem, p.preco FROM produto_comanda pc INNER JOIN comanda c ON c.id = pc.id_comanda INNER JOIN produtos p ON p.id = pc.id_produto WHERE pc.id_comanda = ".$id_comanda." ORDER BY pc.id DESC";
+                    $query = "SELECT pc.id, pc.quantidade, pc.valor total, pc.entregue, c.valor, p.nome, p.descricao, p.imagem, p.preco FROM produto_comanda pc INNER JOIN comanda c ON c.id = pc.id_comanda INNER JOIN produtos p ON p.id = pc.id_produto WHERE pc.id_comanda = ".$id_comanda." ORDER BY pc.entregue ASC";
                     $result = mysqli_query($conexao, $query);
                     if($result):
                         if(mysqli_num_rows($result)>0):
                             while($produtos = mysqli_fetch_assoc($result)):
                             ?>
                             <ul class="list-group mb-3">
-                                <li class="list-group-item py-3">
-                                    <div class="row g-3">
-                                        <div class="col-4 col-md-3 col-lg-2">
-                                        <!--Resposividade-->
-                                        <a href="#">
-                                            <img src="<?php echo $produtos['imagem']; ?>" class="img-thumbnail">
-                                        </a>
-                                        </div>
-                                        <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
-                                            <h4>
-                                                <b>
-                                                <a href="#" class="text-decoration-none text-danger">
-                                                    <?php echo $produtos['nome']; ?>
-                                                </a>
-                                                </b>
-                                            </h4>
-                                            <h4 class="text-dark">
-                                                <small>
-                                                <?php echo $produtos['descricao']; ?>
-                                                </small>
-                                            </h4>
-                                        </div>
-                                        <?php 
-                                            $total_geral = $produtos['valor'];
-                                        ?>
-                                        <div class="text-right mt-2">
-                                            <small class="text-secondary">Valor un: R$ <?php echo $produtos['preco']; ?> ( Qtd: <?php echo $produtos['quantidade']; ?> )</small><br>
-                                            <span class="text-dark">Valor itens: R$ <?php echo $produtos['total']; ?></span>
-                                        </div>
-                                    </div> 
-                                </li>
-                            
+                                <form method="POST">
+                                    <li class="list-group-item py-3">
+                                        <div class="row g-3">
+                                            <div class="col-4 col-md-3 col-lg-2">
+                                            <!--Resposividade-->
+                                            <a href="#">
+                                                <img src="<?php echo $produtos['imagem']; ?>" class="img-thumbnail">
+                                            </a>
+                                            </div>
+                                            <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
+                                                <h4>
+                                                    <b>
+                                                    <a href="#" class="text-decoration-none text-danger">
+                                                        <?php echo $produtos['nome']; ?>
+                                                    </a>
+                                                    </b>
+                                                </h4>
+                                                <h4 class="text-dark">
+                                                    <small>
+                                                    <?php echo $produtos['descricao']; ?>
+                                                    </small>
+                                                </h4>
+                                                
+                                            </div>
+                                            <?php 
+                                                $total_geral = $produtos['valor'];
+                                            ?>
+                                            <br><br><br>
+                                            <input type="hidden" name="id_prod_com" id="id_prod_com" value="<?=$produtos['id']?>">
+                                            <?php
+                                                $entregue = $produtos['entregue'];
+                                                if($entregue == 1){
+                                                    $status = 'Já foi entregue';
+                                                } else{
+                                                    $status = 'Aguardando ser entregue';
+                                                }
+                                            ?>
+                                            <span class="text-left"><b>Status:</b> <?=$status?></span><br>
+                                            
+                                            <div class="text-right mt-2">
+                                                <input type="submit" id="entregue" name="entregue" class="btn btn-success btn-lg" value="Entregue" style="float: right; width: 150px; height:50px; margin-right: 10px;"><br><br><br>
+                                                <small class="text-secondary">Valor un: R$ <?php echo $produtos['preco']; ?> ( Qtd: <?php echo $produtos['quantidade']; ?> )</small><br>
+                                                <span class="text-dark">Valor itens: R$ <?php echo $produtos['total']; ?></span>
+                                            </div>
+                                            
+                                        </div> 
+                                    </li>
+                                </form>
                             <?php
+                                if(isset($_POST['entregue'])){
+                                    $id_comanda = addslashes($_POST['id_prod_com']);
+                                    
+                                    if(!empty($id_comanda)){
+                                        $u->conectar("jglogin","localhost","root","");
+                                        if($u->msgErro == ""){
+                                            if($u->pedido_entregue($id_comanda)){
+                                            }
+                                        }
+                                    }
+                                }
                             endwhile;
                         endif;
                     endif;
+                    
                 ?>
                 </ul>
                 <li class="list-group-item py-3">

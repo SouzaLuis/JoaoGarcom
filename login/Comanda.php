@@ -14,9 +14,6 @@ $id_comanda = $_SESSION['id_comanda'];
 require_once 'classes/comanda.php';
 $c = new Comanda;
 
-if(isset($_POST['pagamento'])){
-    header("location: pagamento.php");
-  }
 ?>
 
 
@@ -120,15 +117,20 @@ if(isset($_POST['pagamento'])){
         <!-- Botões para fechar a comanda -->
         <li class="list-group-item py-3">
           <div class="text-right">
-            <form method="post">
+            <form action="pagamento.php?id=<?=$id_estabelecimento?>" method="post">
               <h4 class="text-dark mb-3">Valor Total: R$ <?php echo $total_geral; ?></h4>
-              <button class="btn btn-danger btn-lg" type="submit" name="pagamento">Pagar Comanda</button>
+              <input type="hidden" name="id_comanda" value="<?=$id_comanda?>">
+              <input type="hidden" name="garcom" value="1">
+              <a href="http://localhost/joaogarcom/login/cardapio.php?id='<?php echo $id_estabelecimento; ?>'" class="btn btn-outline-success btn-lg"> Continuar Pedindo </a>
+              <button class="btn btn-danger btn-lg" type="submit" name="pagamento">Fechar Comanda</button>
             </form>
             <?php
-              if(isset($_POST['pagamento'])){                
+              if(isset($_POST['pagamento'])){ 
+                $id = addslashes($_POST['id_comanda']);   
+                $garcom = addslashes($_POST['garcom']);         
                 $c->conectar("jglogin","localhost","root","");
                 if($c->msgErro == ""){
-                  if($c->pagar_comanda($id_comanda)){}            
+                  if($c->pagar_comanda($id,$garcom)){}
                 }
               }
             ?>

@@ -98,7 +98,7 @@ if(isset($_POST['detalhar'])){
       <br>
       <?php
         $conexao = mysqli_connect('localhost', 'root', '','jglogin');
-        $query = "SELECT p.imagem, p.nome, p.descricao, p.preco un, pc.quantidade, pc.valor valor_c, pc.id id_prod_comanda, c.valor total, c.id_estabelecimento, c.id FROM produto_comanda pc INNER JOIN produtos p ON p.id = pc.id_produto INNER JOIN comanda c ON c.id = pc.id_comanda WHERE pc.id_comanda = ".$id_comanda." AND c.id_usuario = ".$id_usuario." AND c.pagamento=0 ORDER BY pc.id_produto ASC";
+        $query = "SELECT p.imagem, p.nome, p.descricao, p.preco un, pc.quantidade, pc.valor valor_c, pc.id id_prod_comanda, c.valor total, c.id_estabelecimento, c.id FROM produto_comanda pc INNER JOIN produtos p ON p.id = pc.id_produto INNER JOIN comanda c ON c.id = pc.id_comanda WHERE pc.id_comanda = ".$id_comanda." AND c.id_usuario = ".$id_usuario." AND c.pagamento=0 AND pc.entregue = 0 ORDER BY pc.id_produto ASC";
         $result = mysqli_query($conexao, $query);
 
         $total = 0;

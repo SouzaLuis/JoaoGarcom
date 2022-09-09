@@ -17,17 +17,18 @@ Class Comanda{
         }
     }
 
-    public function abrir_comanda($valor,$id_estabelecimento, $id_usuario, $pagamento, $entregue, $garcom, $produto){
+    public function abrir_comanda($valor,$id_estabelecimento, $id_usuario, $pagamento, $garcom, $doacao, $forma_pgto, $produto){
         $pedido = 0;
         global $pdo;   
-        $sql = $pdo->prepare("INSERT INTO comanda (valor, data_comanda, id_estabelecimento, id_usuario, pagamento, entregue, aguardando_garcom, pedido_confirmado) VALUES (:v, NOW(), :id_est, :id_user, :p, :e, :g, :p)");
+        $sql = $pdo->prepare("INSERT INTO comanda (valor, data_comanda, id_estabelecimento, id_usuario, pagamento, forma_pagamento, aguardando_garcom, pedido_confirmado, doacao) VALUES (:v, NOW(), :id_est, :id_user, :p, :fp, :g, :p, :d)");
         $sql->bindValue(":v",$valor);
         $sql->bindValue(":id_est",$id_estabelecimento);
         $sql->bindValue(":id_user",$id_usuario);
         $sql->bindValue(":p",$pagamento);
-        $sql->bindValue(":e",$entregue);
+        $sql->bindValue(":fp",$forma_pgto);
         $sql->bindValue(":g",$garcom);
         $sql->bindValue(":p",$pedido);
+        $sql->bindValue(":d",$doacao);
         $sql->execute();
         return true;
     }
@@ -46,13 +47,14 @@ Class Comanda{
         $comanda_list = $comanda->fetch(PDO::FETCH_ASSOC);
         $valor_comanda = $comanda_list['valor'];
 
-        $sql = $pdo->prepare("SELECT quantidade, valor, id_produto FROM produto_comanda WHERE id_comanda = :id_com AND id_produto = :id_prod"); 
+        $sql = $pdo->prepare("SELECT quantidade, valor, id_produto, entregue FROM produto_comanda WHERE id_comanda = :id_com AND id_produto = :id_prod"); 
         $sql->bindValue(":id_com",$id_comanda);
         $sql->bindValue(":id_prod",$id_produto);
         $sql->execute();
         if($sql->rowCount()>0){
             $produtos = $sql->fetch(PDO::FETCH_ASSOC);
 
+            $entregue = 
             $qtd = $qtd + $produtos['quantidade'];
             $valor_total = $valor * $qtd;
             
@@ -64,12 +66,23 @@ Class Comanda{
             $atualiza_comanda->bindValue(":id_com",$id_comanda);
             $atualiza_comanda->execute();
 
-            $atualiza = $pdo->prepare("UPDATE produto_comanda SET quantidade = :q , valor = :p WHERE id_comanda = :id_com AND id_produto = :id_prod");
-            $atualiza->bindValue(":q",$qtd);
-            $atualiza->bindValue(":p",$valor_total);
-            $atualiza->bindValue(":id_com",$id_comanda);
-            $atualiza->bindValue(":id_prod",$id_produto);
-            $atualiza->execute();
+            if($produtos['entregue'] == 0){
+                $atualiza = $pdo->prepare("UPDATE produto_comanda SET quantidade = :q , valor = :p WHERE id_comanda = :id_com AND id_produto = :id_prod");
+                $atualiza->bindValue(":q",$qtd);
+                $atualiza->bindValue(":p",$valor_total);
+                $atualiza->bindValue(":id_com",$id_comanda);
+                $atualiza->bindValue(":id_prod",$id_produto);
+                $atualiza->execute();
+            } else{
+                $entregue = 0;
+                $insere = $pdo->prepare("INSERT INTO produto_comanda (quantidade, valor, id_comanda, id_produto, entregue) VALUES (:q, :p, :id_com, :id_prod, :e)");
+                $insere->bindValue(":q",$quantidade);
+                $insere->bindValue(":p",$valor_total);     
+                $insere->bindValue(":id_com",$id_comanda);
+                $insere->bindValue(":id_prod",$id_produto);
+                $insere->bindValue(":e",$entregue);
+                $insere->execute();
+            }
             return true;
         } else{
 
@@ -84,11 +97,13 @@ Class Comanda{
             $atualiza_comanda->bindValue(":id_com",$id_comanda);
             $atualiza_comanda->execute();
 
-            $insere = $pdo->prepare("INSERT INTO produto_comanda (quantidade, valor, id_comanda, id_produto) VALUES (:q, :p, :id_com, :id_prod)");
+            $entregue = 0;
+            $insere = $pdo->prepare("INSERT INTO produto_comanda (quantidade, valor, id_comanda, id_produto, entregue) VALUES (:q, :p, :id_com, :id_prod, :e)");
             $insere->bindValue(":q",$quantidade);
             $insere->bindValue(":p",$valor_total);     
             $insere->bindValue(":id_com",$id_comanda);
             $insere->bindValue(":id_prod",$id_produto);
+            $insere->bindValue(":e",$entregue);
             $insere->execute();
             return true;
         }
@@ -256,12 +271,22 @@ Class Comanda{
         return true;
     }
 
-    public function pagar_comanda($id_comanda)
+    public function pagar_comanda($id,$garcom)
     {
-        $garcom = 1;
         global $pdo;
         $sql = $pdo->prepare("UPDATE comanda SET aguardando_garcom = :g WHERE id = :id");
         $sql->bindValue(":g",$garcom);
+        $sql->bindValue(":id",$id);
+        $sql->execute();
+        return true;
+    }
+
+    public function efetuar_pagamento($pgto, $id, $id_comanda)
+    {
+        global $pdo;
+        $sql = $pdo->prepare("UPDATE comanda SET forma_pagamento = :fp WHERE id = :id AND id_estabelecimento = :est");
+        $sql->bindValue("fp", $pgto);
+        $sql->bindValue(":est", $id);
         $sql->bindValue(":id",$id_comanda);
         $sql->execute();
         return true;
