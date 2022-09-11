@@ -5,6 +5,9 @@
          header("location: index.php");
          exit;
      }
+    if(isset($_POST['salvar'])){
+        header("Refresh:0");
+    }
      $id_estabelecimento = $_SESSION['id'];
     require_once 'classes/produto.php';
     $u = new Produto;
@@ -84,7 +87,7 @@
                     </div>
                     <br>
                     <div>
-                        <input type="submit" style="background-color: rgb(160,4,4);width:300px" class="btn btn-danger btn-lg" value="Salvar">
+                        <input type="submit" style="background-color: rgb(160,4,4);width:300px" class="btn btn-danger btn-lg" name="salvar" value="Salvar">
                         <button style="background-color: rgb(160,4,4); width:300px" class="btn btn-danger btn-lg"><a style="text-decoration:none; color: white" href="cardapioEstabelecimento.php">Cancelar</a></button>
                     </div>
                     <br>

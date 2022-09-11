@@ -117,12 +117,13 @@ $c = new Comanda;
         <!-- Botões para fechar a comanda -->
         <li class="list-group-item py-3">
           <div class="text-right">
-            <form action="pagamento.php?id=<?=$id_estabelecimento?>" method="post">
+            <form method="post">
               <h4 class="text-dark mb-3">Valor Total: R$ <?php echo $total_geral; ?></h4>
               <input type="hidden" name="id_comanda" value="<?=$id_comanda?>">
               <input type="hidden" name="garcom" value="1">
               <a href="http://localhost/joaogarcom/login/cardapio.php?id='<?php echo $id_estabelecimento; ?>'" class="btn btn-outline-success btn-lg"> Continuar Pedindo </a>
               <button class="btn btn-danger btn-lg" type="submit" name="pagamento">Fechar Comanda</button>
+              <a href="http://localhost/joaogarcom/login/pagamento.php?id='<?php echo $id_estabelecimento; ?>'" class="btn btn-danger btn-lg"> Pagar Comanda </a>
             </form>
             <?php
               if(isset($_POST['pagamento'])){ 

@@ -139,7 +139,7 @@
                             } else if($pedido == 1){
                                 $color = "f8fc98";
                                 //amarelo claro
-                                $status = "Cliente está consumindo";
+                                $status = "Cliente já pediu";
                             } else{
                                 $color = "eeeeee";
                                 //transparente

@@ -123,11 +123,6 @@ $c = new Comanda;
             </div>
         </li>
     </div>
-    <footer class="footer mt-auto py-3" style="background-color: rgb(160,4,4);">
-        <span class="text-muted">
-            <p class="text-white text-center">Todos os direitos reservados @GLVSoftHouse!</p>
-        </span>
-    </footer>
 </body>
 </html>
 
