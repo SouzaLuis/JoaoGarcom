@@ -242,68 +242,66 @@
                         <div class="form-group"> <input type="submit" class="btnSubmit" value="Cadastrar" /> </div>
                     </form>
                     <?php
-//verificar se clicou no botão
-if(isset($_POST['nomeUc']))
-{
-    $nomeUc = addslashes($_POST['nomeUc']);
-    $telefoneUc = addslashes($_POST['telefoneUc']);
-    $cepUc = addslashes($_POST['cepUc']);
-    $logradouroUc =addslashes($_POST['logradouroUc']);
-    $bairroUc = addslashes($_POST['bairroUc']);
-    $localidadeUc = addslashes($_POST['localidadeUc']);
-    $ufUc = addslashes($_POST['ufUc']);
-    $cpfUc = addslashes($_POST['cpfUc']);
-    $emailUc = addslashes($_POST['emailUc']);
-    $senhaUc = addslashes($_POST['senhaUc']);
-    $confirmarSenhaUc = addslashes($_POST['confSenhaUc']);
-   
-    //verificar se está vazio
-    if(!empty($nomeUc) && !empty($telefoneUc)  && !empty($cepUc)  && !empty($logradouroUc)  && !empty($localidadeUc) && !empty($bairroUc)  && !empty($ufUc) && !empty($cpfUc) && !empty($emailUc) && !empty($senhaUc) && !empty($confirmarSenhaUc))
-    {
-        $u->conectar("jglogin","localhost","root","");
-        if($u->msgErro == ""){
-            if($senhaUc == $confirmarSenhaUc){
-                if($u->cadastrar($nomeUc,$telefoneUc, $cepUc, $logradouroUc, $bairroUc, $localidadeUc, $ufUc ,$cpfUc,$emailUc,$senhaUc))
-                {
-                    ?>
-                    <div id="msg-sucesso">
-                    Cadastrado com sucesso! Acesse para acessar todas as funcionalidades
-                    </div>
-                <?php
-                }else
-                {
-                    ?>
-                    <div class="msg-erro">
-                    Email já cadastrado!
-                    </div>
-                    <?php
-                }
-            } else{
-                ?>
-                <div class="msg-erro">
-                Senhas não correspondem!
-                </div>
-                <?php
-            }            
-        }else{
-            ?>
-                <div class="msg-erro">
-                <?php echo "Erro:".$u.msgErro; ?>
-                </div>
-                <?php
-        }
-    }else{
-        ?>
-        <div class="msg-erro">
-        Preencha todos os campos!
-        </div>
-        <?php
-    }
-}
+                    //verificar se clicou no botão
+                    if(isset($_POST['nomeUc']))
+                    {
+                        $nomeUc = addslashes($_POST['nomeUc']);
+                        $telefoneUc = addslashes($_POST['telefoneUc']);
+                        $cepUc = addslashes($_POST['cepUc']);
+                        $logradouroUc =addslashes($_POST['logradouroUc']);
+                        $bairroUc = addslashes($_POST['bairroUc']);
+                        $localidadeUc = addslashes($_POST['localidadeUc']);
+                        $ufUc = addslashes($_POST['ufUc']);
+                        $cpfUc = addslashes($_POST['cpfUc']);
+                        $emailUc = addslashes($_POST['emailUc']);
+                        $senhaUc = addslashes($_POST['senhaUc']);
+                        $confirmarSenhaUc = addslashes($_POST['confSenhaUc']);
+                    
+                        //verificar se está vazio
+                        if(!empty($nomeUc) && !empty($telefoneUc)  && !empty($cepUc)  && !empty($logradouroUc)  && !empty($localidadeUc) && !empty($bairroUc)  && !empty($ufUc) && !empty($cpfUc) && !empty($emailUc) && !empty($senhaUc) && !empty($confirmarSenhaUc))
+                        {
+                            $u->conectar("jglogin","localhost","root","");
+                            if($u->msgErro == ""){
+                                if($senhaUc == $confirmarSenhaUc){
+                                    if($u->cadastrar($nomeUc,$telefoneUc, $cepUc, $logradouroUc, $bairroUc, $localidadeUc, $ufUc ,$cpfUc,$emailUc,$senhaUc))
+                                    {
+                                        ?>
+                                        <div id="msg-sucesso">
+                                        Cadastrado com sucesso! Acesse para acessar todas as funcionalidades
+                                        </div>
+                                    <?php
+                                    }else
+                                    {
+                                        ?>
+                                        <div class="msg-erro">
+                                        Email já cadastrado!
+                                        </div>
+                                        <?php
+                                    }
+                                } else{
+                                    ?>
+                                    <div class="msg-erro">
+                                    Senhas não correspondem!
+                                    </div>
+                                    <?php
+                                }            
+                            }else{
+                                ?>
+                                    <div class="msg-erro">
+                                    <?php echo "Erro:".$u.msgErro; ?>
+                                    </div>
+                                    <?php
+                            }
+                        }else{
+                            ?>
+                            <div class="msg-erro">
+                            Preencha todos os campos!
+                            </div>
+                            <?php
+                        }
+                    }
 
-?>
-                    
-                    
+                    ?>          
                 </div>
             </div>
         </div>
