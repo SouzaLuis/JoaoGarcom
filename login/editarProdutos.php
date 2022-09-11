@@ -40,13 +40,6 @@
                 border-radius: 13px;
                 color: #000;
             }
-            footer {
-                position: fixed;
-                height: 50px;
-                bottom: 0;
-                width: 100%;
-                margin-left:0;
-            }
         </style>
     </head>
 
@@ -134,10 +127,5 @@
                 ?>
             </div>
         </div>
-        <footer class="footer mt-auto py-3" style="background-color: rgb(160,4,4);">
-            <span class="text-muted">
-                <p class="text-white text-center">Todos os direitos reservados @GLVSoftHouse!</p>
-            </span>
-        </footer>
     </body>
 </html>
