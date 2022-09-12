@@ -146,7 +146,7 @@
           }
         );
         scanner.addListener('scan', function(content) {
-          windows.open("cardapio.php?id="+content,"blank");
+          window.open("confirmaCodigo.php?id="+content,"blank");
         });
         Instascan.Camera.getCameras().then(cameras => 
           {
