@@ -16,11 +16,12 @@ $c = new Comanda;
 
 $conexao = mysqli_connect('localhost', 'root', '','jglogin');
 $id_estabelecimento = $_GET['id'];
-$query = 'SELECT c.valor, c.pagamento FROM comanda c WHERE c.id = '.$id_comanda.' AND c.id_estabelecimento = '.$id_estabelecimento.' ORDER BY c.id ASC';
+$query = 'SELECT c.valor, c.pagamento, c.id_estabelecimento FROM comanda c WHERE c.id = '.$id_comanda.' AND c.id_estabelecimento = '.$id_estabelecimento.' ORDER BY c.id ASC';
 $resultado = mysqli_query($conexao, $query);
 if(!empty($resultado)){
     if($comanda = mysqli_fetch_assoc($resultado)){
       $aberta = $comanda['pagamento'];
+      $id_est = $comanda['id_estabelecimento'];
     }
   }
 
@@ -90,7 +91,7 @@ if($aberta == 1){
                         </label>
                     </div>
                     <div class="text-center">
-                        <input type="hidden" name="id" value="<?=$id_estabelecimento?>">
+                        <input type="hidden" name="id" value="<?=$id_est?>">
                         <input type="hidden" name="id_comanda" value="<?=$id_comanda?>">
                         <button type="submit" name="pagar" style="background-color: rgb(160,4,4);" class="btn btn-danger">Efetuar o pagamento!</button>
                     </div>  
@@ -110,7 +111,7 @@ if($aberta == 1){
                 
                 $c->conectar("jglogin","localhost","root","");
                 if($c->msgErro == ""){
-                    if($c->efetuar_pagamento($pgto, $id, $id_comanda)){}           
+                    if($c->efetuar_pagamento($pgto, $id, $id_comanda)){echo $id;}           
                 }else{
                 }
             }               
