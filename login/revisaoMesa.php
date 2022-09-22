@@ -47,6 +47,7 @@
                     if($result):
                         if(mysqli_num_rows($result)>0):
                             while($produtos = mysqli_fetch_assoc($result)):
+                                $entregue = $produtos['entregue'];
                             ?>
                             <ul class="list-group mb-3">
                                 <form method="POST">
@@ -89,7 +90,7 @@
                                             <span class="text-left"><b>Status:</b> <?=$status?></span><br>
                                             
                                             <div class="text-right mt-2">
-                                                <input type="submit" id="entregue" name="entregue" class="btn btn-success btn-lg" value="Entregue" style="float: right; width: 150px; height:50px; margin-right: 10px;"><br><br><br>
+                                                <button type="submit" id="entregue" name="entregue" class="btn btn-success btn-lg" style="float: right; width: 150px; height:50px; margin-right: 10px;" <?php echo $entregue > 0 ? 'disabled' : '' ; ?>>Entregue</button><br><br><br>
                                                 <small class="text-secondary">Valor un: R$ <?php echo $produtos['preco']; ?> ( Qtd: <?php echo $produtos['quantidade']; ?> )</small><br>
                                                 <span class="text-dark">Valor itens: R$ <?php echo $produtos['total']; ?></span>
                                             </div>

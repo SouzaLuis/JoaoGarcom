@@ -36,7 +36,6 @@
               />
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-              <a class="dropdown-item" href="#">Configurações</a>
               <a class="dropdown-item" href="sair.php">Sair</a>
             </div>
           </li>

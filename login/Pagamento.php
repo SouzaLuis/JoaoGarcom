@@ -25,7 +25,7 @@ if(!empty($resultado)){
     }
   }
 
-header("Refresh:60");
+header("Refresh:30");
 
 if($aberta == 1){
     header("location: inicio.php");

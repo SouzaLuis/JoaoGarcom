@@ -160,7 +160,7 @@
                                                     <input type="hidden" name="id_comanda" value="<?php echo $comanda['id']; ?>">
                                                     <input type="hidden" name="id_estabelecimento" value="<?php echo $comanda['id_estabelecimento']; ?>">
                                                     <input type="hidden" name="id_usuario" value="<?php echo $comanda['id_usuario']; ?>">
-                                                    <input type="submit" id="pago" name="pago" class="btn btn-success btn-lg" value="Pago" style="float: right; width: 150px; margin-right: 10px;">
+                                                    <button type="submit" id="pago" name="pago" class="btn btn-success btn-lg" style="float: right; width: 150px; margin-right: 10px;" <?php echo $pagamento > 0 ? '' : 'disabled' ; ?>>Pago</button>
                                                 </form>
                                             </div>
                                         </div>

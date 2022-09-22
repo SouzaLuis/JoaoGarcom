@@ -10,7 +10,9 @@ if (!isset($_SESSION['id_comanda'])) {
 }
 $id_usuario = $_SESSION['id'];
 $id_comanda = $_SESSION['id_comanda'];
-
+if(isset($_POST['pagamento'])){ 
+    header("Refresh:0");
+}
 require_once 'classes/comanda.php';
 $c = new Comanda;
 
@@ -48,7 +50,7 @@ $c = new Comanda;
                 <br>
                 <?php
                     $conexao = mysqli_connect('localhost', 'root', '','jglogin');
-                    $query = "SELECT p.imagem, p.nome, p.descricao, p.preco un, pc.quantidade, pc.valor valor_c, c.valor total, c.id_estabelecimento FROM produto_comanda pc INNER JOIN produtos p ON p.id = pc.id_produto INNER JOIN comanda c ON c.id = pc.id_comanda WHERE pc.id_comanda = ".$id_comanda." AND c.id_usuario = ".$id_usuario." AND c.pagamento=0 ORDER BY pc.id_produto ASC";
+                    $query = "SELECT p.imagem, p.nome, p.descricao, p.preco un, pc.quantidade, pc.valor valor_c, c.valor total, c.id_estabelecimento, c.aguardando_garcom FROM produto_comanda pc INNER JOIN produtos p ON p.id = pc.id_produto INNER JOIN comanda c ON c.id = pc.id_comanda WHERE pc.id_comanda = ".$id_comanda." AND c.id_usuario = ".$id_usuario." AND c.pagamento=0 ORDER BY pc.id_produto ASC";
                     $query_usuario = "SELECT u.nome, c.numero_mesa FROM comanda c INNER JOIN usuario u ON u.id = c.id_usuario WHERE u.id = ".$id_usuario." and c.id = ".$id_comanda." ORDER BY u.id ASC";
                     $result = mysqli_query($conexao, $query);
                     $result_usuario = mysqli_query($conexao, $query_usuario);
@@ -73,6 +75,7 @@ $c = new Comanda;
                         if(mysqli_num_rows($result)>0):
                             while($produtos = mysqli_fetch_assoc($result)):
                                 $id_estabelecimento = $produtos['id_estabelecimento'];
+                                $garcom = $produtos['aguardando_garcom'];
                 ?>
                 
 
@@ -121,9 +124,9 @@ $c = new Comanda;
               <h4 class="text-dark mb-3">Valor Total: R$ <?php echo $total_geral; ?></h4>
               <input type="hidden" name="id_comanda" value="<?=$id_comanda?>">
               <input type="hidden" name="garcom" value="1">
-              <a href="http://localhost/joaogarcom/login/cardapio.php?id='<?php echo $id_estabelecimento; ?>'" class="btn btn-outline-success btn-lg"> Continuar Pedindo </a>
-              <button class="btn btn-danger btn-lg" type="submit" name="pagamento">Fechar Comanda</button>
-              <a href="http://localhost/joaogarcom/login/pagamento.php?id='<?php echo $id_estabelecimento; ?>'" class="btn btn-danger btn-lg"> Pagar Comanda </a>
+              <a href="http://localhost/joaogarcom/login/cardapio.php?id='<?php echo $id_estabelecimento; ?>'" class="btn btn-outline-success btn-lg" style="80px"> Continuar Pedindo </a>
+              <button class="btn btn-danger btn-lg" type="submit" name="pagamento" style="80px">Fechar Comanda</button>
+              <button class="btn btn-danger btn-lg" <?php echo $garcom > 0 ? '' : 'disabled' ; ?> style="80px"><a href="http://localhost/joaogarcom/login/pagamento.php?id='<?php echo $id_estabelecimento; ?>'" style="color:white;text-decoration:none"> Pagar Comanda </a></button>
             </form>
             <?php
               if(isset($_POST['pagamento'])){ 
