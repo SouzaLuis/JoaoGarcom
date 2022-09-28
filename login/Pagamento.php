@@ -90,6 +90,7 @@ if($aberta == 1){
                             Deseja doar a quantia de R$1,00 ?
                         </label>
                     </div>
+                    <br>
                     <div class="text-center">
                         <input type="hidden" name="id" value="<?=$id_est?>">
                         <input type="hidden" name="id_comanda" value="<?=$id_comanda?>">

@@ -121,12 +121,20 @@ $c = new Comanda;
         <li class="list-group-item py-3">
           <div class="text-right">
             <form method="post">
-              <h4 class="text-dark mb-3">Valor Total: R$ <?php echo $total_geral; ?></h4>
-              <input type="hidden" name="id_comanda" value="<?=$id_comanda?>">
-              <input type="hidden" name="garcom" value="1">
-              <a href="http://localhost/joaogarcom/login/cardapio.php?id='<?php echo $id_estabelecimento; ?>'" class="btn btn-outline-success btn-lg" style="80px"> Continuar Pedindo </a>
-              <button class="btn btn-danger btn-lg" type="submit" name="pagamento" style="80px">Fechar Comanda</button>
-              <button class="btn btn-danger btn-lg" <?php echo $garcom > 0 ? '' : 'disabled' ; ?> style="80px"><a href="http://localhost/joaogarcom/login/pagamento.php?id='<?php echo $id_estabelecimento; ?>'" style="color:white;text-decoration:none"> Pagar Comanda </a></button>
+                <div>
+                    <h4 class="text-dark mb-3">Valor Total: R$ <?php echo $total_geral; ?></h4>
+                    <input type="hidden" name="id_comanda" value="<?=$id_comanda?>">
+                    <input type="hidden" name="garcom" value="1">
+                    <button class="btn btn-outline-success btn-lg" style="width: 200px"><a href="http://localhost/joaogarcom/login/cardapio.php?id='<?php echo $id_estabelecimento; ?>'" style="color:green; text-decoration:none"> Continuar Pedindo </a></button>
+                </div>
+                <br>
+                <div>
+                    <button class="btn btn-danger btn-lg" type="submit" name="pagamento" style="width:200px">Fechar Comanda</button>
+                </div>
+                <br>
+                <div>
+                    <button class="btn btn-danger btn-lg" <?php echo $garcom > 0 ? '' : 'disabled' ; ?> style="width:200px"><a href="http://localhost/joaogarcom/login/pagamento.php?id='<?php echo $id_estabelecimento; ?>'" style="color:white;text-decoration:none"> Pagar Comanda </a></button>
+                </div>
             </form>
             <?php
               if(isset($_POST['pagamento'])){ 
