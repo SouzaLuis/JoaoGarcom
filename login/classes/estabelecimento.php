@@ -66,8 +66,5 @@ Class Estabelecimento
             return false;
         }
     }
-
 }
-
-
 ?>
